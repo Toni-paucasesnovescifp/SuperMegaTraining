@@ -1,3 +1,7 @@
 # SuperMegaTraining
 
-![Screenshot_1](https://github.com/user-attachments/assets/d88a8f1d-a6b9-4e83-82e0-cb723b371d04)
+RECURSOS
+¿cómo  añadir un colaborador en Github?  https://docs.github.com/es/account-and-profile/setting-up-and-managing-your-personal-account-on-github/managing-access-to-your-personal-repositories/inviting-collaborators-to-a-personal-repository
+
+
+
