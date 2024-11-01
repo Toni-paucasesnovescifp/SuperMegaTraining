@@ -52,6 +52,10 @@ public class DataAccess {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        
+        if (user.getId()==0) {
+            user=null;
+        }
         return user;
     }
 
