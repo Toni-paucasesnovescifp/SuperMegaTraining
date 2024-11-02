@@ -10,41 +10,41 @@ package covas.supermegatraining;
  */
 public class Exercici {
     
-    private int Id;
-    private String NomExercici;
-    private String Descripcio;
-    private String DemoFoto;
+    private int id;
+    private String nomExercici;
+    private String descripcio;
+    private String demoFoto;
 
     public int getId() {
-        return Id;
+        return id;
     }
 
-    public void setId(int Id) {
-        this.Id = Id;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getNomExercici() {
-        return NomExercici;
+        return nomExercici;
     }
 
-    public void setNomExercici(String NomExercici) {
-        this.NomExercici = NomExercici;
+    public void setNomExercici(String nomExercici) {
+        this.nomExercici = nomExercici;
     }
 
     public String getDescripcio() {
-        return Descripcio;
+        return descripcio;
     }
 
-    public void setDescripcio(String Descripcio) {
-        this.Descripcio = Descripcio;
+    public void setDescripcio(String descripcio) {
+        this.descripcio = descripcio;
     }
 
     public String getDemoFoto() {
-        return DemoFoto;
+        return demoFoto;
     }
 
-    public void setDemoFoto(String DemoFoto) {
-        this.DemoFoto = DemoFoto;
+    public void setDemoFoto(String demoFoto) {
+        this.demoFoto = demoFoto;
     }
 
     

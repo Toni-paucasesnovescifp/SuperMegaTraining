@@ -12,41 +12,41 @@ public class Workout {
 
 
     
-    private int Id;
-    private String ForDate;
-    private String Comments;
-    private int IdUsuari;
+    private int id;
+    private String forDate;
+    private String comments;
+    private int idUsuari;
 
     public int getId() {
-        return Id;
+        return id;
     }
 
-    public void setId(int Id) {
-        this.Id = Id;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getForDate() {
-        return ForDate;
+        return forDate;
     }
 
-    public void setForDate(String ForDate) {
-        this.ForDate = ForDate;
+    public void setForDate(String forDate) {
+        this.forDate = forDate;
     }
 
     public int getIdUsuari() {
-        return IdUsuari;
+        return idUsuari;
     }
 
-    public void setIdUsuari(int IdUsuari) {
-        this.IdUsuari = IdUsuari;
+    public void setIdUsuari(int idUsuari) {
+        this.idUsuari = idUsuari;
     }
     
     public String getComments() {
-        return Comments;
+        return comments;
     }
 
-    public void setComments(String Comments) {
-        this.Comments = Comments;
+    public void setComments(String comments) {
+        this.comments = comments;
     }
  
 }
