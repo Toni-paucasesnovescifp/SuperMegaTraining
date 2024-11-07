@@ -61,7 +61,7 @@ public class DataAccess {
 
     public static ArrayList<Usuari> getAllUsers() {
         ArrayList<Usuari> usuaris = new ArrayList<>();
-        String sql = "SELECT * FROM Usuaris WHERE Instructor=0";
+        String sql = "SELECT * FROM Usuaris ";
         try (Connection connection = getConnection(); PreparedStatement selectStatement = connection.prepareStatement(sql);) {
 
             ResultSet resultSet = selectStatement.executeQuery();
