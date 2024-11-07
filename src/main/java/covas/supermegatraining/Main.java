@@ -47,7 +47,7 @@ public class Main extends javax.swing.JFrame {
         jLabelLink.setLocation(  jLabelLogo.getWidth()+30 + X, Y+40);
         jLabelLink.setText("<html><a href=''>http://www.SuperMegaTraining.com</a></html>");
         jLabelIrAtras.setVisible(false);
-        jPanel3.setLocation(getWidth()-300, 20);
+        jPanel3.setLocation(getWidth()-300, 20);   // panell amb el nom d'usuari actiu visible y botó de Log Out
         
         
     }
