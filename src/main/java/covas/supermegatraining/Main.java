@@ -9,6 +9,7 @@ import covas.dataaccess.DataAccess;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Desktop;
+import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
@@ -17,6 +18,9 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 
 /**
  *
@@ -26,6 +30,7 @@ public class Main extends javax.swing.JFrame {
     private Usuari usuariActiu=null;
     private DataAccess da= new DataAccess();
     private Usuari usuariSeleccionat=null;
+    private DefaultTableModel model;
     /**
      * Creates new form Main
      */
@@ -45,10 +50,10 @@ public class Main extends javax.swing.JFrame {
         jLabelLink.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         jLabelLink.setForeground(Color.BLUE.darker());
         jLabelLink.setLocation(  jLabelLogo.getWidth()+30 + X, Y+40);
-        jLabelLink.setText("<html><a href=''>http://www.SuperMegaTraining.com</a></html>");
+        jLabelLink.setText("<html><a href=''>http://www.supermegatraining.com</a></html>");
         jLabelIrAtras.setVisible(false);
         jPanel3.setLocation(getWidth()-300, 20);   // panell amb el nom d'usuari actiu visible y botó de Log Out
-        
+       
         
     }
 
@@ -79,10 +84,10 @@ public class Main extends javax.swing.JFrame {
         jLabelLink = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jListUsuarisInstructor = new javax.swing.JList<>();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        jListWorkOuts = new javax.swing.JList<>();
         jLabelListaTitulo = new javax.swing.JLabel();
         jLabelIrAtras = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTableWorkOutsperborrar = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMaximumSize(new java.awt.Dimension(900, 700));
@@ -195,20 +200,15 @@ public class Main extends javax.swing.JFrame {
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
+        jListUsuarisInstructor.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jListUsuarisInstructorMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(jListUsuarisInstructor);
 
         getContentPane().add(jScrollPane2);
         jScrollPane2.setBounds(330, 160, 170, 146);
-
-        jListWorkOuts.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
-        jScrollPane3.setViewportView(jListWorkOuts);
-
-        getContentPane().add(jScrollPane3);
-        jScrollPane3.setBounds(130, 160, 170, 146);
 
         jLabelListaTitulo.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabelListaTitulo.setText("TituloLista");
@@ -224,6 +224,24 @@ public class Main extends javax.swing.JFrame {
         });
         getContentPane().add(jLabelIrAtras);
         jLabelIrAtras.setBounds(240, 310, 118, 60);
+        getContentPane().add(jScrollPane3);
+        jScrollPane3.setBounds(220, 20, 210, 110);
+
+        jTableWorkOutsperborrar.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "blanc", "ForDate", "IdWorkout"
+            }
+        ));
+        getContentPane().add(jTableWorkOutsperborrar);
+        jTableWorkOutsperborrar.setBounds(0, 0, 150, 0);
+        if (jTableWorkOutsperborrar.getColumnModel().getColumnCount() > 0) {
+            jTableWorkOutsperborrar.getColumnModel().getColumn(0).setMinWidth(0);
+            jTableWorkOutsperborrar.getColumnModel().getColumn(0).setPreferredWidth(0);
+            jTableWorkOutsperborrar.getColumnModel().getColumn(0).setMaxWidth(0);
+        }
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -316,8 +334,21 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabelLinkMouseClicked
 
     private void jLabelIrAtrasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelIrAtrasMouseClicked
+      
+        int numDatos = model.getRowCount();
+        for (int i = 0; i < numDatos; i++) {
+            model.removeRow(0);
+      }
+        
+        
+        
         carregarLlistaUsuarisInstructor();// TODO add your handling code here:
     }//GEN-LAST:event_jLabelIrAtrasMouseClicked
+
+    private void jListUsuarisInstructorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jListUsuarisInstructorMouseClicked
+    jScrollPane2.setVisible(false);
+              carregarLlistaWorkOutsUsuari( jListUsuarisInstructor.getSelectedValue() );    // TODO add your handling code here:
+    }//GEN-LAST:event_jListUsuarisInstructorMouseClicked
 
     /**
      * @param args the command line arguments
@@ -345,37 +376,64 @@ public class Main extends javax.swing.JFrame {
         jLabelListaTitulo.setText("Estos son los usuarios a los que entrenas actualmente");        
         jLabelListaTitulo.setVisible(true);
         
-         jListUsuarisInstructor.addMouseListener(new MouseAdapter(){
-          @Override
-          public void mouseClicked(MouseEvent e) {              
-              jScrollPane2.setVisible(false);
-              carregarLlistaWorkOutsUsuari( jListUsuarisInstructor.getSelectedValue() );
-              
-          }
-    });
+    
         
     }
     
     
     public  void carregarLlistaWorkOutsUsuari(String nomUsuari) {
+        
+        JTable jTableWorkOuts = new JTable();
+        JTableHeader th = jTableWorkOuts.getTableHeader();
+        th.setFont(new Font("Serif", Font.BOLD, 15));
+        
+        
+        model =new DefaultTableModel();
+        model.setColumnCount(2);
+        
+        
+
+        
+        
+        jTableWorkOuts.setModel(model);
+        
+        
+        model.setColumnIdentifiers(new Object[]{"ForDate", "WorkoutId" });
+         
+         jScrollPane3.getViewport().add(jTableWorkOuts);
+        
         ArrayList<Usuari> usuaris = da.getAllUsers();
 //Recorrer el contenido del ArrayList
             for(int i=0; i<usuaris.size(); i++) {
     //Añadir cada elemento del ArrayList en el modelo de la lista
              if (usuaris.get(i).getNom().equals(nomUsuari)) {
                  usuariSeleccionat=usuaris.get(i);
-             };
-}
+             }
+          }
         
-        DefaultListModel llistaBase = new DefaultListModel();
+        
+         
+        
+    
         ArrayList<Workout> workouts = da.getWorkoutsPerUser( usuariSeleccionat );
-//Recorrer el contenido del ArrayList
-            for(int i=0; i<workouts.size(); i++) {
+      for(Workout w: workouts) {
     //Añadir cada elemento del ArrayList en el modelo de la lista
-            llistaBase.add(i, workouts.get(i).getId());
-}
-//Asociar el modelo de lista al JList
-            jListWorkOuts.setModel(llistaBase);
+        System.out.println(w.getId() + "--" +  w.getForDate());
+        if (8==8) {      model.addRow(new Object[]{w.getForDate(), w.getId() });}
+        }
+            
+    
+                for(int count = 1; count <= model.getRowCount(); count++){
+                System.out.println(model.getValueAt(count-1, 0)+ "--" +  model.getValueAt(count-1, 1).toString());
+                
+              }
+
+    
+            
+
+            
+        
+            
         jScrollPane3.setVisible(true);
         jScrollPane3.setLocation(jLabelSignIn.getLocation().x-15, jLabelSignIn.getLocation().y+25);
         
@@ -384,6 +442,7 @@ public class Main extends javax.swing.JFrame {
         jLabelListaTitulo.setText("Estos es el listado de Workouts del usuario: " + usuariSeleccionat.getNom()  );        
         jLabelListaTitulo.setVisible(true);
         jLabelIrAtras.setLocation(jScrollPane3.getLocation().x+jScrollPane3.getWidth()/3, jScrollPane3.getLocation().y+jScrollPane3.getWidth()+10);
+        jLabelIrAtras.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         jLabelIrAtras.setVisible(true);
     }
     
@@ -436,13 +495,13 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JLabel jLabelSignIn;
     private javax.swing.JLabel jLabelUsuariRegistrat;
     private javax.swing.JList<String> jListUsuarisInstructor;
-    private javax.swing.JList<String> jListWorkOuts;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JTable jTableWorkOutsperborrar;
     private javax.swing.JTextArea txaShowInfoUsuaris;
     private javax.swing.JTextField txtEmailLogin;
     private javax.swing.JPasswordField txtPasswordLogin;
