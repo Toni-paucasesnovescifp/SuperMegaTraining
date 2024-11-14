@@ -16,6 +16,9 @@ public class Workout {
     private String forDate;
     private String comments;
     private int idUsuari;
+    
+    
+    
 
     public int getId() {
         return id;

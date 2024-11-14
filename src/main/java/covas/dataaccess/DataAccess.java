@@ -118,6 +118,7 @@ public class DataAccess {
                 workout.setId(resultSet.getInt("Id"));
                 workout.setForDate(resultSet.getString("ForDate"));
                 workout.setIdUsuari(resultSet.getInt("UserId"));
+                workout.setComments(resultSet.getString("Comments"));
 
                 workouts.add(workout);
             }
@@ -200,7 +201,7 @@ public class DataAccess {
         insertExercisesPerWorkout(newWorkoutId, exercicis);
     }
 
-    private static int insertToWorkoutTable(Workout w) {
+    public static int insertToWorkoutTable(Workout w) {
         String sql = "INSERT INTO dbo.Workouts (ForDate, UserId, Comments)"
                 + " VALUES (?,?,?)";
         try (Connection conn = getConnection();
@@ -229,6 +230,90 @@ public class DataAccess {
         }
         return 0;
     }
+
+
+    public static int deleteFromWorkoutTable(int workoutId) {
+        String sql = "delete from dbo.Workouts where Id=?" ; 
+                
+        try (Connection conn = getConnection();
+                PreparedStatement insertStatement = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+                ) {
+            
+            insertStatement.setInt(1, workoutId);
+            
+
+            int affectedRows = insertStatement.executeUpdate();
+            
+            if (affectedRows > 0) {
+                // Retrieve the generated keys (identity value)
+                ResultSet resultSet = insertStatement.getGeneratedKeys();
+
+                // Check if a key was generated
+                if (resultSet.next()) {
+                    // Get the last inserted identity value
+                    int lastInsertedId = resultSet.getInt(1);
+                    return lastInsertedId;
+                }
+            }
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+
+
+    
+    
+    
+    
+    
+        public static int updateFromWorkoutTable(String nouForDate, String nouComments,    int workoutId) {
+        String sql = "update dbo.Workouts set  comments=?, ForDate=? where Id=?" ; 
+                
+        try (Connection conn = getConnection();
+                PreparedStatement insertStatement = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+                ) {
+            
+            insertStatement.setString(1, nouComments);            
+            insertStatement.setString(2, nouForDate);                       
+            insertStatement.setInt(3, workoutId);
+            
+
+            int affectedRows = insertStatement.executeUpdate();
+            
+            if (affectedRows > 0) {
+                // Retrieve the generated keys (identity value)
+                ResultSet resultSet = insertStatement.getGeneratedKeys();
+
+                // Check if a key was generated
+                if (resultSet.next()) {
+                    // Get the last inserted identity value
+                    int lastInsertedId = resultSet.getInt(1);
+                    return lastInsertedId;
+                }
+            }
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     private static int insertExercisesPerWorkout(int wId, ArrayList<Exercici> exercicis) {
         for(Exercici e: exercicis) {
