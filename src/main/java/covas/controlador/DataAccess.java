@@ -1,8 +1,8 @@
-package covas.dataaccess;
+package covas.controlador;
 
-import covas.supermegatraining.Usuari;
-import covas.supermegatraining.Exercici;
-import covas.supermegatraining.Workout;
+import covas.model.Usuari;
+import covas.model.Exercici;
+import covas.model.Workout;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;

@@ -1,20 +1,18 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
- */
-package covas.supermegatraining;
+package covas.vistas;
 
+import covas.model.Workout;
+import covas.model.Usuari;
+import covas.model.Exercici;
 import java.awt.Cursor;
 import java.awt.Font;
 import java.util.ArrayList;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
-import covas.dataaccess.DataAccess;
-import java.util.HashSet;
-import java.util.Set;
+import covas.controlador.DataAccess;
+
 import javax.swing.JOptionPane;
-import javax.swing.event.ListSelectionEvent;
+
 
 /**
  *
@@ -25,57 +23,35 @@ public class VistaWorkouts extends javax.swing.JPanel {
     private Usuari usuariSeleccionat=null;
     private DefaultTableModel model;
     private JTable jTableWorkOuts;
-       private DefaultTableModel modelExercicis;
-       private Workout workoutSeleccionat =null;
-       private JTable jTableExercicis;
-    /**
-     * Creates new form VistaWorkouts
-     * @param mainJframe
-     */
+    private DefaultTableModel modelExercicis;
+    private Workout workoutSeleccionat =null;
+    private JTable jTableExercicis;
+ 
     public VistaWorkouts(Main mainJframe) {
         initComponents();
         main=mainJframe;
         carregarTaulaWorkouts();
-        
-        if (model.getRowCount()>0) {
-            carregarTaulaExercicis((int)jTableWorkOuts.getValueAt(jTableWorkOuts.getSelectedRow(), 1));
-            }
-        else {
-            jScrollPane1.setVisible(false);
-            jLabelListaExercicis.setVisible(false);
-            jButtonVerEjercicios.setVisible(false);
-            JOptionPane.showMessageDialog(this, "L'usuari "+ usuariSeleccionat.getNom()   + " encara no té cap workout en el sistema");              
-        }
-        
-        
-        
+        carregarTaulaExercicis((int)jTableWorkOuts.getValueAt(jTableWorkOuts.getSelectedRow(), 1));
     }
 
     
     public void carregarTaulaWorkouts() { 
-        
-        
-        
         jTableWorkOuts = new JTable();
         JTableHeader th = jTableWorkOuts.getTableHeader();
         th.setFont(new Font("Serif", Font.BOLD, 15));
         
-        
         model =new DefaultTableModel();
         model.setColumnCount(3);
-        
-        
         jTableWorkOuts.setModel(model);
-        
         model.setColumnIdentifiers(new Object[]{"ForDate", "Id", "Comments" });
 
         actualizarTablaWorkouts(main.getUsuariSeleccionatTexte());
         
         
-         jScrollPane3.setLocation(25, this.getLocation().y+17);         
-         jScrollPane3.getViewport().add(jTableWorkOuts);
+        jScrollPane3.setLocation(15, this.getLocation().y+17);         
+        jScrollPane3.getViewport().add(jTableWorkOuts);
                 
-      jLabelListaWorkouts.setLocation(jScrollPane3.getLocation().x-5, jScrollPane3.getLocation().y-20);
+        jLabelListaWorkouts.setLocation(jScrollPane3.getLocation().x-5, jScrollPane3.getLocation().y-20);
         jLabelListaWorkouts.setText("Estos es el listado de Workouts del usuario: " + main.getUsuariSeleccionat().getNom()  );        
         jLabelListaWorkouts.setVisible(true);
     
@@ -94,51 +70,41 @@ public class VistaWorkouts extends javax.swing.JPanel {
         jButtonModificarWorkout.setLocation(jScrollPane3.getLocation().x,  jLabelIrAtras.getLocation().y+46);
         jButtonModificarWorkout.setText("Modificar Workout");
 
-       jButtonVerEjercicios.setLocation(jLabelListaWorkouts.getLocation().x+250, jLabelListaWorkouts.getLocation().y+50);
-       jButtonVerEjercicios.setText("Actualizar ejercicios con workout seleccionado");
-
-    
-
+        jButtonVerEjercicios.setLocation(jLabelListaWorkouts.getLocation().x+290, jLabelListaWorkouts.getLocation().y+50);
+        jButtonVerEjercicios.setText("Actualizar datos ejercicios");
         
     }
     
 
     
     
-   public void carregarTaulaExercicis(int idWorkout) {        
-    
+    public void carregarTaulaExercicis(int idWorkout) {        
        
         jTableExercicis = new JTable();
         JTableHeader thExercicis = jTableExercicis.getTableHeader();
         thExercicis.setFont(new Font("Serif", Font.BOLD, 15));
         
-        
         modelExercicis =new DefaultTableModel();
         modelExercicis.setColumnCount(3);
-        
-        
         jTableExercicis.setModel(modelExercicis);
-        
         modelExercicis.setColumnIdentifiers(new Object[]{"IdExercici", "Exercici", "Descripcio" });
-
-
-        
+      
         actualizarTablaEjercicios(idWorkout);
  
-         jScrollPane1.setLocation(jScrollPane3.getLocation().x+510, this.getLocation().y+17);   
-         jScrollPane1.getViewport().removeAll();
-         jScrollPane1.getViewport().add(jTableExercicis);
+        jScrollPane1.setLocation(jScrollPane3.getLocation().x+510, this.getLocation().y+17);   
+        jScrollPane1.getViewport().removeAll();
+        jScrollPane1.getViewport().add(jTableExercicis);
                     
-      jLabelListaExercicis.setLocation(jScrollPane1.getLocation().x, jScrollPane1.getLocation().y-20);
+        jLabelListaExercicis.setLocation(jScrollPane1.getLocation().x, jScrollPane1.getLocation().y-20);
         jLabelListaExercicis.setText("Estos es el listado de Ejercicios del workout: " + workoutSeleccionat.getId()  );        
         jLabelListaExercicis.setVisible(true);
-        repaint();
+  
     
         jScrollPane1.setVisible(true);
-            jLabelListaExercicis.setVisible(true);
-            jButtonVerEjercicios.setVisible(true);
+        jLabelListaExercicis.setVisible(true);
+        jButtonVerEjercicios.setVisible(true);
  
-
+        repaint();
 
 
 
@@ -148,35 +114,28 @@ public class VistaWorkouts extends javax.swing.JPanel {
    
 
    
-   public void actualizarTablaWorkouts(String usuarioIdTexto) {
+    public void actualizarTablaWorkouts(String usuarioIdTexto) {
         for (int i = model.getRowCount()-1; i >=0 ; i--) {
             model.removeRow(i);
         }
        
-       
-       
-       
-       
-       ArrayList<Usuari> usuaris = DataAccess.getAllUsers();
+        ArrayList<Usuari> usuaris = DataAccess.getAllUsers();
             for(int i=0; i<usuaris.size(); i++) {
                 if (usuaris.get(i).getNom().equals(usuarioIdTexto)) {
                      usuariSeleccionat=usuaris.get(i);
-             }
-          }
-        
-        
+                }
+           }
          
-     main.setUsuariSeleccionatTexte(null);
+        main.setUsuariSeleccionatTexte(null);
     
         ArrayList<Workout> workouts = DataAccess.getWorkoutsPerUser( usuariSeleccionat );
-      for(Workout w: workouts) {
-    //Añadir cada elemento del ArrayList en el modelo de la lista
-        
+        for(Workout w: workouts) {
              model.addRow(new Object[]{w.getForDate(), w.getId(), w.getComments() });
         }
             
-    jTableWorkOuts.changeSelection(0, 0, false, false);
+        jTableWorkOuts.changeSelection(0, 0, false, false);
         main.setUsuariSeleccionat(usuariSeleccionat);
+        
 
    }
    
@@ -185,16 +144,14 @@ public class VistaWorkouts extends javax.swing.JPanel {
    
    
 
-   public void actualizarTablaEjercicios(int idWorkout) {
-                      ArrayList<Workout> workouts = DataAccess.getWorkoutsPerUser( usuariSeleccionat );
+    public void actualizarTablaEjercicios(int idWorkout) {
+        ArrayList<Workout> workouts = DataAccess.getWorkoutsPerUser( usuariSeleccionat );
     
-            for(int i=0; i<workouts.size(); i++) {
-                
-                if (workouts.get(i).getId()==idWorkout) {
-                     workoutSeleccionat=workouts.get(i);
-                     
-             }
-          }
+        for(int i=0; i<workouts.size(); i++) {
+            if (workouts.get(i).getId()==idWorkout) {
+                workoutSeleccionat=workouts.get(i);
+            }
+        }
         
         
         ArrayList<Exercici> exercicis = DataAccess.getExercicisPerWorkout( workoutSeleccionat);
@@ -202,24 +159,9 @@ public class VistaWorkouts extends javax.swing.JPanel {
              modelExercicis.addRow(new Object[]{e.getId(), e.getNomExercici()  , e.getDescripcio() });
         }
 
-        
-        jLabelListaExercicis.setText("Estos es el listado de Ejercicios del workout: " + workoutSeleccionat.getId()  );    
-   }
+         jLabelListaExercicis.setText("Estos es el listado de Ejercicios del workout: " + workoutSeleccionat.getId()  );    
+    }
    
-   
- 
-    
-    
-    
-    
-    
-    
-    
-    /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
-     */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -280,7 +222,7 @@ public class VistaWorkouts extends javax.swing.JPanel {
             }
         });
         add(jButtonVerEjercicios);
-        jButtonVerEjercicios.setBounds(90, 0, 250, 40);
+        jButtonVerEjercicios.setBounds(90, 0, 210, 40);
 
         jButtonAnadirWorkout.setText("jButton1");
         jButtonAnadirWorkout.addActionListener(new java.awt.event.ActionListener() {
@@ -335,10 +277,8 @@ public class VistaWorkouts extends javax.swing.JPanel {
 
     private void jButtonVerEjerciciosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVerEjerciciosActionPerformed
         for (int i = modelExercicis.getRowCount()-1; i >=0 ; i--) {
-        modelExercicis.removeRow(i);
+            modelExercicis.removeRow(i);
         }
-        
-        //actualizarTablaEjercicios((int) jTableWorkOuts.getValueAt(jTableWorkOuts.getSelectedRow(), 1));
         actualizarTablaEjercicios( (int)jTableWorkOuts.getValueAt(jTableWorkOuts.getSelectedRow(), 1));
         
         
@@ -348,14 +288,30 @@ public class VistaWorkouts extends javax.swing.JPanel {
     private void jButtonAnadirWorkoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAnadirWorkoutActionPerformed
 
        try { 
-        Workout workoutPerAfegir =new Workout();
-       workoutPerAfegir.setForDate("2024-04-20");
-       workoutPerAfegir.setIdUsuari(main.getUsuariSeleccionat().getId());
-       workoutPerAfegir.setComments("segueix així");
-       DataAccess.insertToWorkoutTable(workoutPerAfegir) ;
-       actualizarTablaWorkouts(main.getUsuariSeleccionat().getNom());
-       } catch  (Exception e) {
-           JOptionPane.showMessageDialog(this, "Hi ha hagut errors i no s'ha pogut donar d'alta el workout. "   );              
+            Workout workoutPerAfegir =new Workout();       
+            
+            String nouForDate= JOptionPane.showInputDialog("Per al nou workout, introdueixi la data en format aaaaa-mm-dd  (per exemple, 2024-05-26");
+            workoutPerAfegir.setForDate(nouForDate);
+            
+            workoutPerAfegir.setIdUsuari(main.getUsuariSeleccionat().getId());
+            
+            String nouComments=JOptionPane.showInputDialog("Introdueixi els comentaris per aquest workout que vol crear");
+            workoutPerAfegir.setComments(nouComments);
+            
+            DataAccess.insertToWorkoutTable(workoutPerAfegir) ;
+            actualizarTablaWorkouts(main.getUsuariSeleccionat().getNom());
+            
+            for (int i = modelExercicis.getRowCount()-1; i >=0 ; i--) {
+                modelExercicis.removeRow(i);
+            }
+            actualizarTablaEjercicios( (int)jTableWorkOuts.getValueAt(jTableWorkOuts.getSelectedRow(), 1));
+    
+            
+            
+            
+            
+         } catch  (Exception e) {
+            JOptionPane.showMessageDialog(this, "Hi ha hagut errors i no s'ha pogut donar d'alta el workout. "   );              
            
        }
        
@@ -365,36 +321,45 @@ public class VistaWorkouts extends javax.swing.JPanel {
     }//GEN-LAST:event_jButtonAnadirWorkoutActionPerformed
 
     private void jButtonBorrarWorkoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBorrarWorkoutActionPerformed
-    try {
-        
-        DataAccess.deleteFromWorkoutTable( (int)jTableWorkOuts.getValueAt(jTableWorkOuts.getSelectedRow(), 1)           );
-        model.removeRow(jTableWorkOuts.getSelectedRow());
-        actualizarTablaWorkouts(main.getUsuariSeleccionat().getNom());
-    } catch (Exception e) {
+        try {        
+            DataAccess.deleteFromWorkoutTable( (int)jTableWorkOuts.getValueAt(jTableWorkOuts.getSelectedRow(), 1)           );
+            model.removeRow(jTableWorkOuts.getSelectedRow());
+            actualizarTablaWorkouts(main.getUsuariSeleccionat().getNom());
+        } catch (Exception e) {
     
            JOptionPane.showMessageDialog(this, "Hi ha hagut errors i no s'ha pogut borrar el workout");              
     }
         
-                // TODO add your handling code here:
+        for (int i = modelExercicis.getRowCount()-1; i >=0 ; i--) {
+            modelExercicis.removeRow(i);
+        }
+        actualizarTablaEjercicios( (int)jTableWorkOuts.getValueAt(jTableWorkOuts.getSelectedRow(), 1));
+    
+        
+        
+        
+        
+        
+        
     }//GEN-LAST:event_jButtonBorrarWorkoutActionPerformed
 
     private void jButtonModificarWorkoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonModificarWorkoutActionPerformed
-    try {
-        String nouForDate="2024-11-14";
-    String nouComments="a tope";
-    int workoutId= (int)jTableWorkOuts.getValueAt(jTableWorkOuts.getSelectedRow(), 1)         ;;
+        try {
+        
+            String nouForDate= (String) JOptionPane.showInputDialog(this, "Per modificar la data al workout, introdueixi la data en format aaaaa-mm-dd  (per exemple, 2024-05-26. Serà la nova data del workout número " + (int)jTableWorkOuts.getValueAt(jTableWorkOuts.getSelectedRow(), 1)        , "Modificar workout", JOptionPane.QUESTION_MESSAGE, null, null, jTableWorkOuts.getValueAt(jTableWorkOuts.getSelectedRow(), 0)        );
+            String nouComments= (String) JOptionPane.showInputDialog(this, "Introdueixi aquí el texte que vol posar ara al workout número "+ (int)jTableWorkOuts.getValueAt(jTableWorkOuts.getSelectedRow(), 1)             , "Modificar workout", JOptionPane.QUESTION_MESSAGE, null, null, jTableWorkOuts.getValueAt(jTableWorkOuts.getSelectedRow(), 2)        );
+    
+            int workoutId= (int)jTableWorkOuts.getValueAt(jTableWorkOuts.getSelectedRow(), 1)         ;;
+
+            DataAccess.updateFromWorkoutTable(nouForDate, nouComments, workoutId);
+            actualizarTablaWorkouts(main.getUsuariSeleccionat().getNom());
+        }
+        catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Hi ha hagut errors i no s'ha pogut modificar el workout");              
+    }
+
 
     
-    
-    DataAccess.updateFromWorkoutTable(nouForDate, nouComments, workoutId);
-    actualizarTablaWorkouts(main.getUsuariSeleccionat().getNom());
-    }
-    catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Hi ha hagut errors i no s'ha pogut modificar el workout");              
-    }
-
-
-        // TODO add your handling code here:
     }//GEN-LAST:event_jButtonModificarWorkoutActionPerformed
 
 
