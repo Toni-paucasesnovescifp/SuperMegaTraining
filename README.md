@@ -10,6 +10,11 @@ https://fpadistancia.caib.es/mod/forum/discuss.php?d=73378#p166879
 
 SKETCHES
 
-![Imagen de WhatsApp 2024-10-24 a las 23 47 33_7d3aa12c](https://github.com/user-attachments/assets/ba1d081f-a28a-4777-a401-e58066d959bb)
-![Imagen de WhatsApp 2024-10-24 a las 23 47 33_89e476b8](https://github.com/user-attachments/assets/e3e15b71-3a66-4fdc-9b1f-80d7b7ba9e45)
+![foto1 (paginas que contiene)](https://github.com/user-attachments/assets/8ae68652-b16c-4730-97a7-e64c46bf82ae)
+
+![foto 2 (continuacion foto 1)](https://github.com/user-attachments/assets/72c99419-cdd4-48a2-9d42-1d0b876842d3)
+
+![foto 3 (esquema secuencias)](https://github.com/user-attachments/assets/86ab52c5-6508-4bac-b3dc-54552e6bff87)
+
+
 
