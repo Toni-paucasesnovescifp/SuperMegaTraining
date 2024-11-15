@@ -61,8 +61,11 @@ public class VistaUsuaris extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jListUsuarisInstructorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jListUsuarisInstructorMouseClicked
-        jScrollPane2.setVisible(false);
+        main.getContentPane().remove(this);
+        main.revalidate();
+        main.repaint();
         main.carregarLlistaWorkOutsUsuari( jListUsuarisInstructor.getSelectedValue() );    // TODO add your handling code here:
+                
     }//GEN-LAST:event_jListUsuarisInstructorMouseClicked
 
 

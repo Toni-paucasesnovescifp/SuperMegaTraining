@@ -31,7 +31,10 @@ public class VistaWorkouts extends javax.swing.JPanel {
         initComponents();
         main=mainJframe;
         carregarTaulaWorkouts();
-        carregarTaulaExercicis((int)jTableWorkOuts.getValueAt(jTableWorkOuts.getSelectedRow(), 1));
+        
+        
+        carregarTaulaExercicis();
+
     }
 
     
@@ -78,7 +81,7 @@ public class VistaWorkouts extends javax.swing.JPanel {
 
     
     
-    public void carregarTaulaExercicis(int idWorkout) {        
+    public void carregarTaulaExercicis() {        
        
         jTableExercicis = new JTable();
         JTableHeader thExercicis = jTableExercicis.getTableHeader();
@@ -89,20 +92,27 @@ public class VistaWorkouts extends javax.swing.JPanel {
         jTableExercicis.setModel(modelExercicis);
         modelExercicis.setColumnIdentifiers(new Object[]{"IdExercici", "Exercici", "Descripcio" });
       
-        actualizarTablaEjercicios(idWorkout);
+        if (model.getRowCount()>0) {
+        actualizarTablaEjercicios((int)jTableWorkOuts.getValueAt(jTableWorkOuts.getSelectedRow(), 1));
+        }
  
         jScrollPane1.setLocation(jScrollPane3.getLocation().x+510, this.getLocation().y+17);   
         jScrollPane1.getViewport().removeAll();
         jScrollPane1.getViewport().add(jTableExercicis);
                     
         jLabelListaExercicis.setLocation(jScrollPane1.getLocation().x, jScrollPane1.getLocation().y-20);
-        jLabelListaExercicis.setText("Estos es el listado de Ejercicios del workout: " + workoutSeleccionat.getId()  );        
+        
+        if (workoutSeleccionat!=null) {
+            jLabelListaExercicis.setText("Estos es el listado de Ejercicios del workout: " + workoutSeleccionat.getId()  );        
+        } else {
+            jLabelListaExercicis.setText("" );                    
+        }
+            
+        
         jLabelListaExercicis.setVisible(true);
   
     
-        jScrollPane1.setVisible(true);
-        jLabelListaExercicis.setVisible(true);
-        jButtonVerEjercicios.setVisible(true);
+        
  
         repaint();
 
@@ -186,7 +196,7 @@ public class VistaWorkouts extends javax.swing.JPanel {
             }
         });
         add(jScrollPane3);
-        jScrollPane3.setBounds(50, 50, 280, 130);
+        jScrollPane3.setBounds(10, 50, 280, 130);
 
         jLabelListaWorkouts.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabelListaWorkouts.setText("jLabel1");
@@ -203,7 +213,7 @@ public class VistaWorkouts extends javax.swing.JPanel {
         add(jLabelIrAtras);
         jLabelIrAtras.setBounds(260, 250, 118, 60);
         add(jScrollPane1);
-        jScrollPane1.setBounds(390, 50, 330, 130);
+        jScrollPane1.setBounds(330, 50, 330, 130);
 
         jLabelListaExercicis.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabelListaExercicis.setText("jLabel1");
@@ -258,6 +268,10 @@ public class VistaWorkouts extends javax.swing.JPanel {
         for (int i = 0; i < numDatos; i++) {
             model.removeRow(0);
         }
+        
+        main.getContentPane().remove(this);
+        main.revalidate();
+        main.repaint();
 
         main.carregarLlistaUsuarisInstructor();// TODO add your handling code here:
     }//GEN-LAST:event_jLabelIrAtrasMouseClicked
@@ -304,8 +318,10 @@ public class VistaWorkouts extends javax.swing.JPanel {
             for (int i = modelExercicis.getRowCount()-1; i >=0 ; i--) {
                 modelExercicis.removeRow(i);
             }
+            
+            if (model.getRowCount()>0) {
             actualizarTablaEjercicios( (int)jTableWorkOuts.getValueAt(jTableWorkOuts.getSelectedRow(), 1));
-    
+            }
             
             
             
@@ -333,7 +349,13 @@ public class VistaWorkouts extends javax.swing.JPanel {
         for (int i = modelExercicis.getRowCount()-1; i >=0 ; i--) {
             modelExercicis.removeRow(i);
         }
-        actualizarTablaEjercicios( (int)jTableWorkOuts.getValueAt(jTableWorkOuts.getSelectedRow(), 1));
+        
+        if (model.getRowCount()>0) {
+            actualizarTablaEjercicios( (    int)jTableWorkOuts.getValueAt(jTableWorkOuts.getSelectedRow(), 1));
+        } else {
+            jLabelListaExercicis.setText("");
+        }
+        
     
         
         

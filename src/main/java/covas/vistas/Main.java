@@ -192,8 +192,8 @@ public class Main extends javax.swing.JFrame {
         jLabelUsuariRegistrat.setText("");
         jPanel3.setVisible(false);        // TODO add your handling code here:
         setUsuariActiu(null);
-        getContentPane().remove(pnlVistaUsuaris);
-        getContentPane().remove(pnlVistaWorkouts);
+        getContentPane().remove(getPnlVistaUsuaris());
+        if (getPnlVistaWorkouts()!=null) {getContentPane().remove(getPnlVistaWorkouts());}
         pnlMain.getJLabelSignIn().setVisible(true);
         repaint();
                 
@@ -243,7 +243,16 @@ public class Main extends javax.swing.JFrame {
     }
     
     public  void carregarLlistaUsuarisInstructor() {
-        if (pnlVistaWorkouts!=null) {getContentPane().remove(pnlVistaWorkouts);}
+        
+        if (pnlVistaWorkouts!=null ) {
+        getContentPane().remove(getPnlVistaWorkouts());
+        }
+       
+ 
+        if (pnlVistaUsuaris!=null ) {
+        getContentPane().remove(getPnlVistaUsuaris());
+        }
+        
         DefaultListModel llistaBase = new DefaultListModel();
         ArrayList<Usuari> usuaris = DataAccess.getAllUsersByInstructor(getUsuariActiu().getId() );
         System.out.println("l'usuari es: "+getUsuariActiu().getId());
@@ -255,13 +264,14 @@ public class Main extends javax.swing.JFrame {
 
     
         
-        pnlVistaUsuaris = new VistaUsuaris(this);
-        pnlVistaUsuaris.setBounds(1,320,getContentPane().getWidth(),500);
-        pnlVistaUsuaris.setSize(getContentPane().getWidth(),300);
-        pnlVistaUsuaris.getListUsuarisInstructor().setModel(llistaBase);
+        setPnlVistaUsuaris(new VistaUsuaris(this));
+        getPnlVistaUsuaris().setBounds(1,320,getContentPane().getWidth(),500);
+        getPnlVistaUsuaris().setSize(getContentPane().getWidth(),300);
+        getPnlVistaUsuaris().getListUsuarisInstructor().setModel(llistaBase);
         
         
-        getContentPane().add(pnlVistaUsuaris);
+        getContentPane().add(getPnlVistaUsuaris());
+        revalidate();
         repaint();
 
         
@@ -269,14 +279,15 @@ public class Main extends javax.swing.JFrame {
     
     
     public  void carregarLlistaWorkOutsUsuari(String nomUsuari) {
+        getContentPane().remove(getPnlVistaUsuaris());        
         setUsuariSeleccionatTexte(nomUsuari)        ;
-        pnlVistaWorkouts = new VistaWorkouts(this);
-        pnlVistaWorkouts.setBounds(1,320,getContentPane().getWidth(),500);
-        pnlVistaWorkouts.setSize(getContentPane().getWidth(),300);
+        setPnlVistaWorkouts(new VistaWorkouts(this));
+        getPnlVistaWorkouts().setBounds(1,320,getContentPane().getWidth(),500);
+        getPnlVistaWorkouts().setSize(getContentPane().getWidth(),300);
             
         
-        getContentPane().remove(pnlVistaUsuaris);
-        getContentPane().add(pnlVistaWorkouts);
+        getContentPane().remove(getPnlVistaUsuaris());
+        getContentPane().add(getPnlVistaWorkouts());
         repaint();
 
             
@@ -294,6 +305,22 @@ public class Main extends javax.swing.JFrame {
                 new Main().setVisible(true);
             }
         });
+    }
+
+    public VistaUsuaris getPnlVistaUsuaris() {
+        return pnlVistaUsuaris;
+    }
+
+    public void setPnlVistaUsuaris(VistaUsuaris pnlVistaUsuaris) {
+        this.pnlVistaUsuaris = pnlVistaUsuaris;
+    }
+
+    public VistaWorkouts getPnlVistaWorkouts() {
+        return pnlVistaWorkouts;
+    }
+
+    public void setPnlVistaWorkouts(VistaWorkouts pnlVistaWorkouts) {
+        this.pnlVistaWorkouts = pnlVistaWorkouts;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
