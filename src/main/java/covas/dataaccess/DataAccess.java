@@ -1,4 +1,4 @@
-package covas.controlador;
+package covas.dataaccess;
 
 import covas.model.Usuari;
 import covas.model.Exercici;
@@ -25,7 +25,8 @@ public class DataAccess {
             //connection = DriverManager.getConnection(properties.getProperty("connectionUrl"));
             String connectionUrl = "jdbc:sqlserver://localhost:1433;database=simulapdb;user=sa;password=Pwd1234;encrypt=false;trustServerCertificate=false;loginTimeout=10;";
             String connectionUrlAzure = "jdbc:sqlserver://simulapdbserver.database.windows.net:1433;database=simulapdb;user=simulapdbadmin@simulapdbserver;password=Pwd1234.;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;";
-
+            
+                            
             //connection = DriverManager.getConnection(connectionUrl);
             connection = DriverManager.getConnection(connectionUrl);
 
@@ -48,6 +49,7 @@ public class DataAccess {
                 user.setEmail(resultSet.getString("Email"));
                 user.setPasswordHash(resultSet.getString("PasswordHash"));
                 user.setInstructor(resultSet.getBoolean("Instructor"));
+                user.setFoto(resultSet.getBytes("Foto")); // Leer el campo Foto
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -73,6 +75,7 @@ public class DataAccess {
                 user.setEmail(resultSet.getString("Email"));
                 user.setPasswordHash(resultSet.getString("PasswordHash"));
                 user.setInstructor(resultSet.getBoolean("Instructor"));
+                user.setFoto(resultSet.getBytes("Foto")); // Leer el campo Foto
                 usuaris.add(user);
             }
         } catch (SQLException e) {
@@ -325,7 +328,7 @@ public class DataAccess {
         return exercicis.size();
     }
 
-    private static int insertExerciciPerWorkout(int wId, Exercici e) {
+    public static int insertExerciciPerWorkout(int wId, Exercici e) {
         String sql = "INSERT INTO dbo.ExercicisWorkouts (IdWorkout, IdExercici)"
                 + " VALUES (?,?)";
         try (Connection conn = getConnection(); PreparedStatement insertStatement = conn.prepareStatement(sql)) {
@@ -338,4 +341,39 @@ public class DataAccess {
         }
         return 0;
     }
+    
+    
+    public static int deleteFromExercicisWorkoutsTable(int IdExercici, int IdWorkout) {
+    String deleteIntentsSql = "DELETE FROM dbo.Intents WHERE IdExerciciWorkout IN (SELECT id FROM dbo.ExercicisWorkouts WHERE IdExercici = ? AND IdWorkout = ?)";
+    String deleteExercicisWorkoutsSql = "DELETE FROM dbo.ExercicisWorkouts WHERE IdExercici = ? AND IdWorkout = ?";
+
+    try (Connection conn = getConnection()) {
+        // Eliminar los registros de la tabla Intents
+        try (PreparedStatement deleteIntentsStatement = conn.prepareStatement(deleteIntentsSql)) {
+            deleteIntentsStatement.setInt(1, IdExercici);
+            deleteIntentsStatement.setInt(2, IdWorkout);
+            deleteIntentsStatement.executeUpdate();
+        }
+
+        // Eliminar los registros de la tabla ExercicisWorkouts
+        try (PreparedStatement deleteStatement = conn.prepareStatement(deleteExercicisWorkoutsSql)) {
+            deleteStatement.setInt(1, IdExercici);
+            deleteStatement.setInt(2, IdWorkout);
+            int affectedRows = deleteStatement.executeUpdate();
+            return affectedRows;
+        }
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return 0;
+}
+
+    
+    
+    
+    
+    
+    
+    
 }

@@ -18,9 +18,19 @@ public class Workout {
     private int idUsuari;
     
     
-    
+   public Workout(String comments) {
+        this.comments = comments;
+        
+    }    
 
-    public int getId() {
+
+   public Workout() {
+        
+    }    
+
+   
+   
+   public int getId() {
         return id;
     }
 

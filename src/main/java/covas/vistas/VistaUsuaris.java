@@ -1,6 +1,15 @@
 package covas.vistas;
 
+import covas.dataaccess.DataAccess;
+import covas.model.Usuari;
+import java.awt.Color;
+import java.util.ArrayList;
+import javax.swing.BorderFactory;
+import javax.swing.DefaultListModel;
 import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.border.Border;
+import net.miginfocom.swing.MigLayout;
 
 /**
  *
@@ -13,13 +22,62 @@ public class VistaUsuaris extends javax.swing.JPanel {
         initComponents();
         main=mainJframe;  
         
-        jScrollPane2.setLocation(main.getLocation().x+main.getWidth()/2-40, this.getLocation().y+17);
-        jScrollPane2.setVisible(true);
+        //jScrollPane2.setLocation(main.getLocation().x+main.getWidth()/2-40, this.getLocation().y+17);
+        //jScrollPane2.setVisible(true);
         
-        jLabelListaTitulo.setLocation(main.getWidth()/2-jScrollPane2.getWidth()/2-5, this.getLocation().y);
-        jLabelListaTitulo.setText("Estos son los usuarios a los que entrenas actualmente");        
-        jLabelListaTitulo.setVisible(true);
+        //jLabelListaTitulo.setLocation(main.getWidth()/2-jScrollPane2.getWidth()/2-5, this.getLocation().y);
+        //jLabelListaTitulo.setText("Estos son los usuarios a los que entrenas actualmente");        
+        //jLabelListaTitulo.setVisible(true);
         
+                
+        
+              //  setLayout(new MigLayout("fill, insets 10", "[grow, center]", "[]10[]"));
+              
+              //setLayout(new MigLayout("fill, insets 1", "[grow, center]", "[]1[]"));
+                setLayout(new MigLayout("fill, insets 1", "[grow, center]", "[grow, center]"));
+     
+        
+
+        
+
+        
+
+        DefaultListModel llistaBase = new DefaultListModel();
+        ArrayList<Usuari> usuaris = DataAccess.getAllUsersByInstructor(main.getUsuariActiu().getId() );
+        System.out.println("l'usuari es: "+main.getUsuariActiu().getId());
+        System.out.println("\n"+ usuaris.size());
+            for(int i=0; i<usuaris.size(); i++) {
+                llistaBase.add(i, usuaris.get(i).getNom());
+                
+        }
+
+        getListUsuarisInstructor().setModel(llistaBase);
+
+
+        JPanel panellJListUsuaris= new JPanel();
+                        panellJListUsuaris.setLayout(new MigLayout("fill, insets 1", "[grow, center]", "[]1[]"));
+
+                        
+                        
+                        
+        jLabelListaTitulo.setText("Estos son los usuarios a los que entrenas actualmente");
+        //add(jLabelListaTitulo, "align center, wrap");
+       
+        panellJListUsuaris.add(jLabelListaTitulo, " align center,  wrap");
+        panellJListUsuaris.add(jScrollPane2, "span,  align center, wrap");
+        
+                
+                
+                
+                 Color borderColor = new Color(255, 200, 0); // Color entre amarillo y naranja
+        Border border = BorderFactory.createLineBorder(borderColor, 5);
+                
+                
+        jListUsuarisInstructor.setBorder(border);
+
+       
+        
+        add(panellJListUsuaris, "span,  align center, wrap");
     }
     
     
@@ -35,15 +93,18 @@ public class VistaUsuaris extends javax.swing.JPanel {
         jListUsuarisInstructor = new javax.swing.JList<>();
         jLabelListaTitulo = new javax.swing.JLabel();
 
-        setMinimumSize(new java.awt.Dimension(900, 700));
-        setPreferredSize(new java.awt.Dimension(900, 700));
+        setPreferredSize(new java.awt.Dimension(900, 400));
         setLayout(null);
+
+        jScrollPane2.setPreferredSize(new java.awt.Dimension(200, 300));
 
         jListUsuarisInstructor.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
+        jListUsuarisInstructor.setMaximumSize(new java.awt.Dimension(500, 500));
+        jListUsuarisInstructor.setMinimumSize(new java.awt.Dimension(1, 1));
         jListUsuarisInstructor.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jListUsuarisInstructorMouseClicked(evt);
@@ -54,10 +115,9 @@ public class VistaUsuaris extends javax.swing.JPanel {
         add(jScrollPane2);
         jScrollPane2.setBounds(30, 10, 190, 210);
 
-        jLabelListaTitulo.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabelListaTitulo.setText("TituloLista");
         add(jLabelListaTitulo);
-        jLabelListaTitulo.setBounds(20, 230, 520, 20);
+        jLabelListaTitulo.setBounds(20, 230, 520, 16);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jListUsuarisInstructorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jListUsuarisInstructorMouseClicked

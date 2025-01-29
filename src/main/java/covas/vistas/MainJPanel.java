@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import javax.swing.JLabel;
+import net.miginfocom.swing.MigLayout;
 
 /**
  *
@@ -20,18 +21,39 @@ public class MainJPanel extends javax.swing.JPanel {
         initComponents();
         main=mainJframe;        
 
-        int X = (main.getWidth() ) / 2;
+        // setLayout(new MigLayout("fill"));
+        
+        int X = (main.getWidth() ) / 3;
         int Y = 80;
-        jLabelLogo.setLocation(X - jLabelLogo.getWidth()/2, Y);
+        //jLabelLogo.setLocation(X - jLabelLogo.getWidth()/2, Y);
         
         
         jLabelLink.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         jLabelLink.setForeground(Color.BLUE.darker());
-        jLabelLink.setLocation(  jLabelLogo.getLocation().x+ jLabelLogo.getWidth()+10, Y+jLabelLogo.getHeight()/2);
+        //jLabelLink.setLocation(  jLabelLogo.getLocation().x+ jLabelLogo.getWidth()+10, Y+jLabelLogo.getHeight()/2);
         jLabelLink.setText("<html><a href=''>http://www.supermegatraining.com</a></html>");
         
-        jLabelSignIn.setLocation(jLabelLogo.getLocation().x+ jLabelLogo.getWidth()/3, Y+jLabelLogo.getHeight() + 20        );
+        //jLabelSignIn.setLocation(jLabelLogo.getLocation().x+ jLabelLogo.getWidth()/3, Y+jLabelLogo.getHeight() + 20        );
+        //jPanelPresentacio.setLocation(X, Y);
         jLabelSignIn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        
+        
+        
+            setLayout(new MigLayout("fill, insets 1", "[grow, center]", "[]1[]"));
+//setLayout(new MigLayout("fill, insets 1", "[grow, center]", "[]1[]"));
+        
+                jPanelPresentacio.setLayout(new MigLayout("fill, insets 1", "[grow, center]", "[]1[]"));
+            
+        // Ajustar la posición vertical de jPanelPresentacio
+        jPanelPresentacio.add(jLabelLogo, "  align center, wrap");
+        jPanelPresentacio.add(jLabelLink, "  grow, align center, wrap");
+        jPanelPresentacio.add(jLabelSignIn, "  align center, wrap");
+
+        add(jPanelPresentacio, "span, align center,  wrap");
+
+             
+             repaint();
+        
     }
 
     @SuppressWarnings("unchecked")
@@ -44,13 +66,24 @@ public class MainJPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabelLink = new javax.swing.JLabel();
+        jPanelPresentacio = new javax.swing.JPanel();
         jLabelLogo = new javax.swing.JLabel();
+        jLabelLink = new javax.swing.JLabel();
         jLabelSignIn = new javax.swing.JLabel();
 
-        setMinimumSize(new java.awt.Dimension(900, 700));
-        setPreferredSize(new java.awt.Dimension(900, 700));
+        setName(""); // NOI18N
+        setPreferredSize(new java.awt.Dimension(900, 150));
         setLayout(null);
+
+        jPanelPresentacio.setMinimumSize(new java.awt.Dimension(10, 10));
+        jPanelPresentacio.setVerifyInputWhenFocusTarget(false);
+        jPanelPresentacio.setLayout(null);
+        add(jPanelPresentacio);
+        jPanelPresentacio.setBounds(0, 0, 10, 10);
+
+        jLabelLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/logocompany.jpg"))); // NOI18N
+        add(jLabelLogo);
+        jLabelLogo.setBounds(90, 10, 123, 90);
 
         jLabelLink.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabelLink.setText("companyname");
@@ -60,11 +93,7 @@ public class MainJPanel extends javax.swing.JPanel {
             }
         });
         add(jLabelLink);
-        jLabelLink.setBounds(150, 80, 300, 20);
-
-        jLabelLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/logocompany.jpg"))); // NOI18N
-        add(jLabelLogo);
-        jLabelLogo.setBounds(20, 50, 100, 90);
+        jLabelLink.setBounds(3, 3, 99, 20);
 
         jLabelSignIn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/iconologin.png"))); // NOI18N
         jLabelSignIn.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -73,7 +102,7 @@ public class MainJPanel extends javax.swing.JPanel {
             }
         });
         add(jLabelSignIn);
-        jLabelSignIn.setBounds(30, 160, 80, 70);
+        jLabelSignIn.setBounds(330, 10, 60, 70);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jLabelLinkMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelLinkMouseClicked
@@ -95,5 +124,6 @@ public class MainJPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabelLink;
     private javax.swing.JLabel jLabelLogo;
     private javax.swing.JLabel jLabelSignIn;
+    private javax.swing.JPanel jPanelPresentacio;
     // End of variables declaration//GEN-END:variables
 }
