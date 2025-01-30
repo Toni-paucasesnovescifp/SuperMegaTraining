@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package covas.model;
 
 /**
@@ -10,27 +6,22 @@ package covas.model;
  */
 public class Workout {
 
-
-    
     private int id;
     private String forDate;
     private String comments;
     private int idUsuari;
-    
-    
-   public Workout(String comments) {
+
+    public Workout() {
+
+    }
+
+
+    public Workout(String comments) {
         this.comments = comments;
-        
-    }    
+    }
 
 
-   public Workout() {
-        
-    }    
-
-   
-   
-   public int getId() {
+    public int getId() {
         return id;
     }
 
@@ -53,7 +44,7 @@ public class Workout {
     public void setIdUsuari(int idUsuari) {
         this.idUsuari = idUsuari;
     }
-    
+
     public String getComments() {
         return comments;
     }
@@ -61,5 +52,5 @@ public class Workout {
     public void setComments(String comments) {
         this.comments = comments;
     }
- 
+
 }

@@ -14,54 +14,43 @@ import net.miginfocom.swing.MigLayout;
  * @author Toni Covas
  */
 public class MainJPanel extends javax.swing.JPanel {
-    private Main main=null;
 
+    private Main main = null;
 
     public MainJPanel(Main mainJframe) {
         initComponents();
-        main=mainJframe;        
+        main = mainJframe;
 
-        // setLayout(new MigLayout("fill"));
-        
-        int X = (main.getWidth() ) / 3;
-        int Y = 80;
-        //jLabelLogo.setLocation(X - jLabelLogo.getWidth()/2, Y);
-        
-        
+        // label on apareix el link, configurant un cursor especial quan el ratolí està damunt
         jLabelLink.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         jLabelLink.setForeground(Color.BLUE.darker());
-        //jLabelLink.setLocation(  jLabelLogo.getLocation().x+ jLabelLogo.getWidth()+10, Y+jLabelLogo.getHeight()/2);
         jLabelLink.setText("<html><a href=''>http://www.supermegatraining.com</a></html>");
-        
-        //jLabelSignIn.setLocation(jLabelLogo.getLocation().x+ jLabelLogo.getWidth()/3, Y+jLabelLogo.getHeight() + 20        );
-        //jPanelPresentacio.setLocation(X, Y);
+
         jLabelSignIn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        
-        
-        
-            setLayout(new MigLayout("fill, insets 1", "[grow, center]", "[]1[]"));
-//setLayout(new MigLayout("fill, insets 1", "[grow, center]", "[]1[]"));
-        
-                jPanelPresentacio.setLayout(new MigLayout("fill, insets 1", "[grow, center]", "[]1[]"));
-            
-        // Ajustar la posición vertical de jPanelPresentacio
+
+        // definim el layout principal dels objectes MainJPanel
+        setLayout(new MigLayout("fill, insets 1", "[grow, center]", "[]1[]"));
+
+        //layout pel panell de prestació
+        jPanelPresentacio.setLayout(new MigLayout("fill, insets 1", "[grow, center]", "[]1[]"));
+
+        // Afegim al panell de prestació els distints elements que durà, definint els paràmetres miglayout  (centrat, cada un a una línea distinta...)
         jPanelPresentacio.add(jLabelLogo, "  align center, wrap");
         jPanelPresentacio.add(jLabelLink, "  grow, align center, wrap");
         jPanelPresentacio.add(jLabelSignIn, "  align center, wrap");
 
+        // insertam el panell de prestació dins l'objecte principal de la classe MainJPanel
         add(jPanelPresentacio, "span, align center,  wrap");
 
-             
-             repaint();
-        
+        repaint();
+
     }
 
     @SuppressWarnings("unchecked")
-    
-    
+
     public JLabel getJLabelSignIn() {
         return this.jLabelSignIn;
-        
+
     }
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -114,9 +103,9 @@ public class MainJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_jLabelLinkMouseClicked
 
     private void jLabelSignInMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelSignInMouseClicked
-        
+
         main.abrirLogin();
-        
+
     }//GEN-LAST:event_jLabelSignInMouseClicked
 
 

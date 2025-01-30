@@ -16,71 +16,49 @@ import net.miginfocom.swing.MigLayout;
  * @author Toni Covas
  */
 public class VistaUsuaris extends javax.swing.JPanel {
-    private Main main=null;
+
+    private Main main = null;
 
     public VistaUsuaris(Main mainJframe) {
         initComponents();
-        main=mainJframe;  
-        
-        //jScrollPane2.setLocation(main.getLocation().x+main.getWidth()/2-40, this.getLocation().y+17);
-        //jScrollPane2.setVisible(true);
-        
-        //jLabelListaTitulo.setLocation(main.getWidth()/2-jScrollPane2.getWidth()/2-5, this.getLocation().y);
-        //jLabelListaTitulo.setText("Estos son los usuarios a los que entrenas actualmente");        
-        //jLabelListaTitulo.setVisible(true);
-        
-                
-        
-              //  setLayout(new MigLayout("fill, insets 10", "[grow, center]", "[]10[]"));
-              
-              //setLayout(new MigLayout("fill, insets 1", "[grow, center]", "[]1[]"));
-                setLayout(new MigLayout("fill, insets 1", "[grow, center]", "[grow, center]"));
-     
-        
+        main = mainJframe;
 
-        
+        // definim el layout per les instàncies de l'objecte VistaUsuaris
+        setLayout(new MigLayout("fill, insets 1", "[grow, center]", "[grow, center]"));
 
-        
-
+        //definim un DefaultListModel que serà la base d'informació per el JList
         DefaultListModel llistaBase = new DefaultListModel();
-        ArrayList<Usuari> usuaris = DataAccess.getAllUsersByInstructor(main.getUsuariActiu().getId() );
-        System.out.println("l'usuari es: "+main.getUsuariActiu().getId());
-        System.out.println("\n"+ usuaris.size());
-            for(int i=0; i<usuaris.size(); i++) {
-                llistaBase.add(i, usuaris.get(i).getNom());
-                
-        }
+        ArrayList<Usuari> usuaris = DataAccess.getAllUsersByInstructor(main.getUsuariActiu().getId());
+        System.out.println("l'usuari es: " + main.getUsuariActiu().getId());
+        System.out.println("\n" + usuaris.size());
+        for (int i = 0; i < usuaris.size(); i++) {
+            llistaBase.add(i, usuaris.get(i).getNom());
 
+        }
+        
+        //definim el DefaultListModel al Jlist
         getListUsuarisInstructor().setModel(llistaBase);
 
+        
+        // cream un jPanel amb MigLayout que durà tant el Jlist i el jLabel que presenta el Jlist
+        JPanel panellJListUsuaris = new JPanel();
+        panellJListUsuaris.setLayout(new MigLayout("fill, insets 1", "[grow, center]", "[]1[]"));
 
-        JPanel panellJListUsuaris= new JPanel();
-                        panellJListUsuaris.setLayout(new MigLayout("fill, insets 1", "[grow, center]", "[]1[]"));
-
-                        
-                        
-                        
         jLabelListaTitulo.setText("Estos son los usuarios a los que entrenas actualmente");
-        //add(jLabelListaTitulo, "align center, wrap");
-       
+        
+
         panellJListUsuaris.add(jLabelListaTitulo, " align center,  wrap");
         panellJListUsuaris.add(jScrollPane2, "span,  align center, wrap");
-        
-                
-                
-                
-                 Color borderColor = new Color(255, 200, 0); // Color entre amarillo y naranja
+
+        // definim un marco per el jList
+        Color borderColor = new Color(255, 200, 0); // Color entre groc i taronja
         Border border = BorderFactory.createLineBorder(borderColor, 5);
-                
-                
         jListUsuarisInstructor.setBorder(border);
 
-       
-        
+        //incorporam el jList dins el panell, definint les propietats de MigLayout
         add(panellJListUsuaris, "span,  align center, wrap");
     }
-    
-    
+
     public JList<String> getListUsuarisInstructor() {
         return this.jListUsuarisInstructor;
     }
@@ -120,12 +98,13 @@ public class VistaUsuaris extends javax.swing.JPanel {
         jLabelListaTitulo.setBounds(20, 230, 520, 16);
     }// </editor-fold>//GEN-END:initComponents
 
+    // definim que en fer click al jList se mos obri la pantalla dels workouts
     private void jListUsuarisInstructorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jListUsuarisInstructorMouseClicked
         main.getContentPane().remove(this);
         main.revalidate();
         main.repaint();
-        main.carregarLlistaWorkOutsUsuari( jListUsuarisInstructor.getSelectedValue() );    // TODO add your handling code here:
-                
+        main.carregarLlistaWorkOutsUsuari(jListUsuarisInstructor.getSelectedValue());    
+
     }//GEN-LAST:event_jListUsuarisInstructorMouseClicked
 
 

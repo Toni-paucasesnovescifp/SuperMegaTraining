@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package covas.model;
 
 /**
@@ -9,7 +5,7 @@ package covas.model;
  * @author Toni Covas
  */
 public class Exercici {
-    
+
     private int id;
     private String nomExercici;
     private String descripcio;
@@ -47,5 +43,4 @@ public class Exercici {
         this.demoFoto = demoFoto;
     }
 
-    
 }

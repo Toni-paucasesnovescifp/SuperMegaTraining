@@ -17,7 +17,7 @@ import java.util.Properties;
  */
 public class DataAccess {
 
-    private static Connection getConnection() {
+    private static Connection getConnection()  {
         Connection connection = null;
         Properties properties = new Properties();
         try {
@@ -25,18 +25,17 @@ public class DataAccess {
             //connection = DriverManager.getConnection(properties.getProperty("connectionUrl"));
             String connectionUrl = "jdbc:sqlserver://localhost:1433;database=simulapdb;user=sa;password=Pwd1234;encrypt=false;trustServerCertificate=false;loginTimeout=10;";
             String connectionUrlAzure = "jdbc:sqlserver://simulapdbserver.database.windows.net:1433;database=simulapdb;user=simulapdbadmin@simulapdbserver;password=Pwd1234.;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;";
-            
-                            
-            //connection = DriverManager.getConnection(connectionUrl);
-            connection = DriverManager.getConnection(connectionUrl);
 
-        } catch (Exception e) {
+            connection = DriverManager.getConnection(connectionUrlAzure);
+
+        }
+        catch (Exception e) {
             e.printStackTrace();
         }
         return connection;
     }
 
-    public static Usuari getUser(String email) {
+    public static Usuari getUser(String email) throws Exception, SQLException {
         Usuari user = null;
         String sql = "SELECT * FROM Usuaris WHERE Email = ?";
         try (Connection connection = getConnection(); PreparedStatement selectStatement = connection.prepareStatement(sql);) {
@@ -51,12 +50,10 @@ public class DataAccess {
                 user.setInstructor(resultSet.getBoolean("Instructor"));
                 user.setFoto(resultSet.getBytes("Foto")); // Leer el campo Foto
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        
-        if (user.getId()==0) {
-            user=null;
+        } 
+
+        if (user.getId() == 0) {
+            user = null;
         }
         return user;
     }
@@ -64,10 +61,9 @@ public class DataAccess {
     public static ArrayList<Usuari> getAllUsers() {
         ArrayList<Usuari> usuaris = new ArrayList<>();
         String sql = "SELECT * FROM Usuaris ";
+
         try (Connection connection = getConnection(); PreparedStatement selectStatement = connection.prepareStatement(sql);) {
-
             ResultSet resultSet = selectStatement.executeQuery();
-
             while (resultSet.next()) {
                 Usuari user = new Usuari();
                 user.setId(resultSet.getInt("Id"));
@@ -90,7 +86,6 @@ public class DataAccess {
         try (Connection connection = getConnection(); PreparedStatement selectStatement = connection.prepareStatement(sql);) {
             selectStatement.setInt(1, idInstructor);
             ResultSet resultSet = selectStatement.executeQuery();
-
             while (resultSet.next()) {
                 Usuari user = new Usuari();
                 user.setId(resultSet.getInt("Id"));
@@ -207,15 +202,13 @@ public class DataAccess {
     public static int insertToWorkoutTable(Workout w) {
         String sql = "INSERT INTO dbo.Workouts (ForDate, UserId, Comments)"
                 + " VALUES (?,?,?)";
-        try (Connection conn = getConnection();
-                PreparedStatement insertStatement = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
-                ) {
+        try (Connection conn = getConnection(); PreparedStatement insertStatement = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);) {
             insertStatement.setString(1, w.getForDate());
             insertStatement.setInt(2, w.getIdUsuari());
             insertStatement.setString(3, w.getComments());
 
             int affectedRows = insertStatement.executeUpdate();
-            
+
             if (affectedRows > 0) {
                 // Retrieve the generated keys (identity value)
                 ResultSet resultSet = insertStatement.getGeneratedKeys();
@@ -227,30 +220,22 @@ public class DataAccess {
                     return lastInsertedId;
                 }
             }
-            
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return 0;
     }
-
 
     public static int deleteFromWorkoutTable(int workoutId) {
-        String sql = "delete from dbo.Workouts where Id=?" ; 
-                
-        try (Connection conn = getConnection();
-                PreparedStatement insertStatement = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
-                ) {
-            
+        String sql = "delete from dbo.Workouts where Id=?";
+
+        try (Connection conn = getConnection(); PreparedStatement insertStatement = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);) {
             insertStatement.setInt(1, workoutId);
-            
-
             int affectedRows = insertStatement.executeUpdate();
-            
             if (affectedRows > 0) {
                 // Retrieve the generated keys (identity value)
                 ResultSet resultSet = insertStatement.getGeneratedKeys();
-
                 // Check if a key was generated
                 if (resultSet.next()) {
                     // Get the last inserted identity value
@@ -258,38 +243,24 @@ public class DataAccess {
                     return lastInsertedId;
                 }
             }
-            
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return 0;
     }
 
+    public static int updateFromWorkoutTable(String nouForDate, String nouComments, int workoutId) {
+        String sql = "update dbo.Workouts set  comments=?, ForDate=? where Id=?";
 
-
-    
-    
-    
-    
-    
-        public static int updateFromWorkoutTable(String nouForDate, String nouComments,    int workoutId) {
-        String sql = "update dbo.Workouts set  comments=?, ForDate=? where Id=?" ; 
-                
-        try (Connection conn = getConnection();
-                PreparedStatement insertStatement = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
-                ) {
-            
-            insertStatement.setString(1, nouComments);            
-            insertStatement.setString(2, nouForDate);                       
+        try (Connection conn = getConnection(); PreparedStatement insertStatement = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);) {
+            insertStatement.setString(1, nouComments);
+            insertStatement.setString(2, nouForDate);
             insertStatement.setInt(3, workoutId);
-            
-
             int affectedRows = insertStatement.executeUpdate();
-            
             if (affectedRows > 0) {
                 // Retrieve the generated keys (identity value)
                 ResultSet resultSet = insertStatement.getGeneratedKeys();
-
                 // Check if a key was generated
                 if (resultSet.next()) {
                     // Get the last inserted identity value
@@ -297,29 +268,15 @@ public class DataAccess {
                     return lastInsertedId;
                 }
             }
-            
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return 0;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     private static int insertExercisesPerWorkout(int wId, ArrayList<Exercici> exercicis) {
-        for(Exercici e: exercicis) {
+        for (Exercici e : exercicis) {
             int rowsAffected = insertExerciciPerWorkout(wId, e);
             if (rowsAffected != 1) {
                 return 0;
@@ -341,39 +298,29 @@ public class DataAccess {
         }
         return 0;
     }
-    
-    
-    public static int deleteFromExercicisWorkoutsTable(int IdExercici, int IdWorkout) {
-    String deleteIntentsSql = "DELETE FROM dbo.Intents WHERE IdExerciciWorkout IN (SELECT id FROM dbo.ExercicisWorkouts WHERE IdExercici = ? AND IdWorkout = ?)";
-    String deleteExercicisWorkoutsSql = "DELETE FROM dbo.ExercicisWorkouts WHERE IdExercici = ? AND IdWorkout = ?";
 
-    try (Connection conn = getConnection()) {
-        // Eliminar los registros de la tabla Intents
-        try (PreparedStatement deleteIntentsStatement = conn.prepareStatement(deleteIntentsSql)) {
-            deleteIntentsStatement.setInt(1, IdExercici);
-            deleteIntentsStatement.setInt(2, IdWorkout);
-            deleteIntentsStatement.executeUpdate();
-        }
+    public static int deleteFromExercicisWorkoutsTable(int IdExercici, int IdWorkout) throws SQLException {
+        String deleteIntentsSql = "DELETE FROM dbo.Intents WHERE IdExerciciWorkout IN (SELECT id FROM dbo.ExercicisWorkouts WHERE IdExercici = ? AND IdWorkout = ?)";
+        String deleteExercicisWorkoutsSql = "DELETE FROM dbo.ExercicisWorkouts WHERE IdExercici = ? AND IdWorkout = ?";
 
-        // Eliminar los registros de la tabla ExercicisWorkouts
-        try (PreparedStatement deleteStatement = conn.prepareStatement(deleteExercicisWorkoutsSql)) {
-            deleteStatement.setInt(1, IdExercici);
-            deleteStatement.setInt(2, IdWorkout);
-            int affectedRows = deleteStatement.executeUpdate();
-            return affectedRows;
-        }
+        try (Connection conn = getConnection()) {
+            // Eliminar los registros de la tabla Intents
+            try (PreparedStatement deleteIntentsStatement = conn.prepareStatement(deleteIntentsSql)) {
+                deleteIntentsStatement.setInt(1, IdExercici);
+                deleteIntentsStatement.setInt(2, IdWorkout);
+                deleteIntentsStatement.executeUpdate();
+            }
 
-    } catch (SQLException e) {
-        e.printStackTrace();
+            // Eliminar los registros de la tabla ExercicisWorkouts
+            try (PreparedStatement deleteStatement = conn.prepareStatement(deleteExercicisWorkoutsSql)) {
+                deleteStatement.setInt(1, IdExercici);
+                deleteStatement.setInt(2, IdWorkout);
+                int affectedRows = deleteStatement.executeUpdate();
+                return affectedRows;
+            }
+
+        } 
+        //return 0;
     }
-    return 0;
-}
 
-    
-    
-    
-    
-    
-    
-    
 }

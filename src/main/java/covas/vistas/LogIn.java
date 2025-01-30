@@ -7,13 +7,16 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
-
 import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 
 /**
  *
@@ -29,14 +32,51 @@ public class LogIn extends javax.swing.JDialog {
     public LogIn(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+
         main = (Main) parent;
         repaint();
         btnLogin.setEnabled(false);
         txtEmailLogin.setBackground(Color.YELLOW);
+
+        jButtonTancar.setToolTipText("Pitji aquí per tancar la finestre");
+
+        // Añadir efecto al hacer hover
+        jButtonTancar.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                jButtonTancar.setBackground(Color.LIGHT_GRAY);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                jButtonTancar.setBackground(UIManager.getColor("control"));
+            }
+        });
+
+        
+        
+        btnLogin.setToolTipText("Pitji aquí per fer el login");
+
+        // Añadir efecto al hacer hover
+        btnLogin.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                btnLogin.setBackground(Color.LIGHT_GRAY);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                btnLogin.setBackground(UIManager.getColor("control"));
+            }
+        });
+        
+        
+        
+        //aplicam el mètode validar email ja d'un principi, per validar l'email que hi ha per defecte
         validateEmail();
 
+        //listener pel camp email, per anar validant l'email cada vegada que se pitja una tecla
         txtEmailLogin.addKeyListener(new KeyAdapter() {
-
             @Override
             public void keyReleased(KeyEvent e) {
                 validateEmail();
@@ -44,53 +84,42 @@ public class LogIn extends javax.swing.JDialog {
 
         });
 
-
-            txtPasswordLogin.addActionListener(new ActionListener() {
+        // per fer click a login automàticament cada vegada que pitjem return desde el camp del password
+        txtPasswordLogin.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                btnLogin.doClick(); // Ejecutar la acción del botón
+                btnLogin.doClick(); // Ejecutar l' acció del botó
             }
         });
 
+        // per fer click a login automàticament cada vegada que pitjem return desde el camp del email
         txtEmailLogin.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                btnLogin.doClick(); // Ejecutar la acción del botón
+                btnLogin.doClick(); // Ejecutar l' acción del botó
             }
         });
-
-
-
-
-
-
-
 
     }
 
     private void validateEmail() {
         String email = txtEmailLogin.getText();
         if (isValidEmail(email)) {
-            txtEmailLogin.setBackground(Color.WHITE); // Cambiar a blanco si el email es válido
+            txtEmailLogin.setBackground(Color.WHITE); // Canviar a blanco si el email es vàlid
+            btnLogin.setToolTipText("Pitji aquí per fer el login");
             btnLogin.setEnabled(true);
         } else {
-            txtEmailLogin.setBackground(Color.YELLOW); // Mantener amarillo si el email no es válido
+            txtEmailLogin.setBackground(Color.YELLOW); // Canviar a groc si el email no es vàlid
             btnLogin.setEnabled(false);
+            btnLogin.setToolTipText("Fins que no hagi posat una adreça d'email correcta, no s'habilita aquest botó");
         }
     }
 
     private boolean isValidEmail(String email) {
-        String emailRegex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{1,6}$";
+        String emailRegex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{1,6}$";  // patró de la regular expression per revisar l'email
         Pattern pattern = Pattern.compile(emailRegex);
         return pattern.matcher(email).matches();
     }
-    
-    
-            
-
-    
-    
-    
 
     @SuppressWarnings("unchecked")
 
@@ -154,55 +183,62 @@ public class LogIn extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    
- 
-
-    
-    
-    
+    // definim el que passa quan pitja al botó per fer login
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
+        // canviam el cursor del ratolí quan feim click al botó
         setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
-    Thread loginThread = new Thread(new Runnable() {
-        @Override
-        public void run() {
-            Usuari usuari = DataAccess.getUser(txtEmailLogin.getText());
-            if (usuari != null) {
-                char[] passwordToVerify = txtPasswordLogin.getPassword();
-                String userPasswordHashInDatabase = usuari.getPasswordHash();
-                var result = BCrypt.verifyer().verify(passwordToVerify, userPasswordHashInDatabase);
+        // ficam el codi dins un Thread, per executar-ho amb un fil diferent i permetre que l'equip no quedi bloquejat durant el procés
+        Thread loginThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Usuari usuari = null;
 
-                if (result.verified) {
-                    if (usuari.isInstructor()) {
-                        main.setUsuariActiu(usuari);                        
-                        JOptionPane.showMessageDialog(null, "Login correcte. Benvingut " + usuari.getNom() + "!", "Proceso Login" , JOptionPane.INFORMATION_MESSAGE);
+                try {
+                    usuari = DataAccess.getUser(txtEmailLogin.getText());
+                } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(null, "Error quan intentam accedir a l'usuari, transmeti aquest missatge a l'administrador del sistema: \n Error al mètode getUser(). " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null, "Error quan intentam accedir a l'usuari, transmeti aquest missatge a l'administrador del sistema: \n Error al mètode getUser(). " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
 
+                if (usuari != null) {
+                    char[] passwordToVerify = txtPasswordLogin.getPassword();
+                    String userPasswordHashInDatabase = usuari.getPasswordHash();
+                    var result = BCrypt.verifyer().verify(passwordToVerify, userPasswordHashInDatabase);
+
+                    if (result.verified) {
+                        if (usuari.isInstructor()) {
+                            main.setUsuariActiu(usuari);
+                            JOptionPane.showMessageDialog(null, "Login correcte. Benvingut " + usuari.getNom() + "!", "Proceso Login", JOptionPane.INFORMATION_MESSAGE);
+
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Ho sentim. És necessari que l'usuari sigui instructor per accedir " + usuari.getNom() + "!", "Proceso Login", JOptionPane.INFORMATION_MESSAGE);
+                        }
                     } else {
-                        JOptionPane.showMessageDialog(null, "Ho sentim. És necessari que l'usuari sigui instructor per accedir " + usuari.getNom() + "!", "Proceso Login" , JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Password incorrecte !", "Proceso Login", JOptionPane.INFORMATION_MESSAGE);
                     }
                 } else {
-                    JOptionPane.showMessageDialog(null, "Password incorrecte !", "Proceso Login" , JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Error. Email " + txtEmailLogin.getText() + " no trobat a la base de dades!", "Proceso Login", JOptionPane.INFORMATION_MESSAGE);
                 }
-            } else {
-                JOptionPane.showMessageDialog(null, "Error. Email " + txtEmailLogin.getText() + " no trobat a la base de dades!", "Proceso Login" , JOptionPane.INFORMATION_MESSAGE);
+
+                setCursor(Cursor.getDefaultCursor());
+                if (main.getUsuariActiu() != null) {
+                    dispose();
+                    main.registrarUsuariActiu(main.getUsuariActiu());
+                    main.carregarLlistaUsuarisInstructor();
+                }
             }
+        });
 
-            setCursor(Cursor.getDefaultCursor());
-            if (main.getUsuariActiu() != null) {
-                dispose();
-                main.registrarUsuariActiu(main.getUsuariActiu());
-                main.carregarLlistaUsuarisInstructor();
-            }
-        }
-    });
+        // iniciam el Thread que acabam de definir
+        loginThread.start();
 
-    loginThread.start();
 
-   
     }//GEN-LAST:event_btnLoginActionPerformed
 
     private void jButtonTancarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonTancarActionPerformed
-        dispose();        // TODO add your handling code here:
+        dispose();        // tancam l'objecte MainJPanel
     }//GEN-LAST:event_jButtonTancarActionPerformed
 
     /**

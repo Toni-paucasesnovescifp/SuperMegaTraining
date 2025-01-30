@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package covas.model;
 
 /**
@@ -9,64 +5,60 @@ package covas.model;
  * @author Toni Covas
  */
 public class Usuari {
-    
-    private int Id;
-    private String Nom;
-    private String Email;
-    private String PasswordHash;
-    private byte[] Foto;
-    private boolean Instructor;
-    
-    
+
+    private int id;
+    private String nom;
+    private String email;
+    private String passwordHash;
+    private byte[] foto;
+    private boolean instructor;
 
     public int getId() {
-        return Id;
+        return id;
     }
 
     public void setId(int Id) {
-        this.Id = Id;
+        this.id = Id;
     }
 
     public String getNom() {
-        return Nom;
+        return nom;
     }
 
     public void setNom(String Nom) {
-        this.Nom = Nom;
+        this.nom = Nom;
     }
 
     public String getEmail() {
-        return Email;
+        return email;
     }
 
     public void setEmail(String Email) {
-        this.Email = Email;
+        this.email = Email;
     }
 
     public String getPasswordHash() {
-        return PasswordHash;
+        return passwordHash;
     }
 
     public void setPasswordHash(String PasswordHash) {
-        this.PasswordHash = PasswordHash;
+        this.passwordHash = PasswordHash;
     }
 
     public byte[] getFoto() {
-        return Foto;
+        return foto;
     }
 
     public void setFoto(byte[] Foto) {
-        this.Foto = Foto;
+        this.foto = Foto;
     }
 
     public boolean isInstructor() {
-        return Instructor;
+        return instructor;
     }
 
     public void setInstructor(boolean Instructor) {
-        this.Instructor = Instructor;
+        this.instructor = Instructor;
     }
-  
 
-    
 }
