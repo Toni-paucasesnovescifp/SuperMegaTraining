@@ -72,6 +72,7 @@ A la pantalla de l'exemple seu veu la mateixa pantalla amb dos tamanys distints 
        - **Interacció amb l'usuari:** L'aplicació dóna contínuament missatges amigables: quan entram a l'aplicació i hem fet el login, quan sortim, demana confirmació a l'usuari del procés del borrat, confirma amb una frase d'èxit quan l'alta d'un workout ha funcionat correctament.... Això crea més proximitat amb l'usuari i una millor experiència.
        - **aparició d'un calendari quan posam la data:** se desplega un DatePicker per introduir la data, la qual cosa fa molt més agradable i professional el procés d'introduir una data.
        - **col.locació damunt el registre de la fila afegit/editat:**  quan se dóna d'alta un workout s'obri una pantalla específica (jDialog) per dur a terme aquesta funcionalitat. Quan tancam aquesta pantalla i tornam a la taula de workouts, el cursor se col.loca damunt el workout recen creat.
+       - **canvi del cursor del ratolí:** quan feim click al botó login (a la pàgina on introduim user i password) quan pitjam LogIn per començar el procés de validació, mentre s'està processant hi ha un canvi de cursor, per tornar al cursor normal en haver acabat el procés. Si la validació és ràpida, pràcticamente el canvi és imperceptible. Però si triga un poc més temps o si acabàs amb error per no poder conectar, sí que se veu durant un temps el canvi de cursor. Aquest canvi de cursor dóna e entendre a l'usuari  que el sistema segueix treballant.
 
   ![image](https://github.com/user-attachments/assets/a8ec9322-8205-4163-a201-070aea8f9010)
   
@@ -90,14 +91,3 @@ A la pantalla de l'exemple seu veu la mateixa pantalla amb dos tamanys distints 
   ![image](https://github.com/user-attachments/assets/065ca009-51d6-4070-92a4-5f8ee86b1b88)
 
 
-
-  
-
-
-
-
-
-
-
-
-  
