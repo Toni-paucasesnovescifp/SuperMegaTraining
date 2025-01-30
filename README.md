@@ -74,12 +74,19 @@ A la pantalla de l'exemple seu veu la mateixa pantalla amb dos tamanys distints 
        - **col.locació damunt el registre de la fila afegit/editat:**  quan se dóna d'alta un workout s'obri una pantalla específica (jDialog) per dur a terme aquesta funcionalitat. Quan tancam aquesta pantalla i tornam a la taula de workouts, el cursor se col.loca damunt el workout recen creat.
 
   ![image](https://github.com/user-attachments/assets/a8ec9322-8205-4163-a201-070aea8f9010)
+  
   ![image](https://github.com/user-attachments/assets/ea3b1498-8a63-4d76-af45-3ee7b8357835)
+  
   ![image](https://github.com/user-attachments/assets/362b73f1-f84b-43ac-be03-55dd7087d91f)
+  
   ![image](https://github.com/user-attachments/assets/6bc94211-d4cd-4369-8156-74a0e7d674ad)
+  
   ![image](https://github.com/user-attachments/assets/86cd3157-8f8b-4636-9671-119e68065c53)
+  
   ![image](https://github.com/user-attachments/assets/885046bd-e3da-48fd-8897-1724739e4698)
+  
   ![image](https://github.com/user-attachments/assets/66cf6267-a20a-49f8-bc9f-62e1ac7a8fe2)
+  
   ![image](https://github.com/user-attachments/assets/065ca009-51d6-4070-92a4-5f8ee86b1b88)
 
 
