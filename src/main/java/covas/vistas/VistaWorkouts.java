@@ -75,6 +75,7 @@ public class VistaWorkouts extends javax.swing.JPanel {
 
     }
 
+    // llegim la foto de la base de dades que té l'usuari i la mostram dins un JLabel
     public void carregarFoto() {
         JLabel jLabelFoto;
         byte[] fotoBytes = usuariSeleccionat.getFoto();
@@ -89,9 +90,9 @@ public class VistaWorkouts extends javax.swing.JPanel {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
-            // Crear un JLabel per mostrar la imatge
             
+
+            // Crear un JLabel per mostrar la imatge            
             jLabelFoto = new JLabel();
             if (imagen != null) {
 
@@ -109,7 +110,7 @@ public class VistaWorkouts extends javax.swing.JPanel {
             }
         } else {
             // Mostrar un mensaje si fotoBytes es null
-            jLabelFoto = new JLabel("No hay foto disponible");
+            jLabelFoto= new JLabel("No hay foto disponible");
         }
 
         
@@ -393,7 +394,7 @@ public class VistaWorkouts extends javax.swing.JPanel {
         add(jLabelListaWorkouts);
         jLabelListaWorkouts.setBounds(50, 220, 330, 16);
 
-        jLabelIrAtras.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/flecha_atras.png"))); // NOI18N
+        jLabelIrAtras.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/flecha-atras.png"))); // NOI18N
         jLabelIrAtras.setText("Volver");
         jLabelIrAtras.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {

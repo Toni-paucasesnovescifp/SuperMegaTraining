@@ -51,7 +51,7 @@
     <Component class="javax.swing.JLabel" name="jLabelIrAtras">
       <Properties>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/images/flecha_atras.png"/>
+          <Image iconType="3" name="/images/flecha-atras.png"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Volver"/>
       </Properties>

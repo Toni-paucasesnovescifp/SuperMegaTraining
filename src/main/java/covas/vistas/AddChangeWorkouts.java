@@ -66,6 +66,8 @@ public class AddChangeWorkouts extends javax.swing.JDialog {
     private JButton jButtonAfegirModificar;
     private UtilDateModel model;
     private boolean pasAfegirAModificar = false;
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    private SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
 
     /**
      * Creates new form AddChangeWorkouts
@@ -242,7 +244,7 @@ public class AddChangeWorkouts extends javax.swing.JDialog {
                 int selectedId = 0;
                 int numeroInsercions = 0;
                 Exercici selectedExercici = null;
-                // Verificar si el usuario hizo clic en OK, si és així seguim endavant. Si no, s'acaba l'execució
+                // Verificar si l' usuario va fer clic en OK, si és així seguim endavant. Si no, s'acaba l'execució
                 if (result == JOptionPane.OK_OPTION) {
                     // Obtener el exercici seleccionado
                     String selectedItem = (String) comboBox.getSelectedItem();
@@ -271,7 +273,7 @@ public class AddChangeWorkouts extends javax.swing.JDialog {
                         }
                     }
 
-                    // només insertam l'exercici en cas que no existís ja.
+                    // només insertam l'exercici en cas que no existís ja dins el workout en qüestió.
                     if (!jaExisteix) {
 
                         numeroInsercions = DataAccess.insertExerciciPerWorkout(workoutModificar.getId(), selectedExercici);
@@ -316,12 +318,9 @@ public class AddChangeWorkouts extends javax.swing.JDialog {
 
         Date selectedDate = (Date) datePicker.getModel().getValue();
         Date selectedTime = (Date) timeSpinner.getValue();
+
         if (selectedDate != null) {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
-
             formattedDate = dateFormat.format(selectedDate) + " " + timeFormat.format(selectedTime);;
-
         } else {
             JOptionPane.showMessageDialog(null, "Ho sentim, la data no pot estar en blanc", "Error", JOptionPane.ERROR_MESSAGE);
             return;
@@ -369,12 +368,9 @@ public class AddChangeWorkouts extends javax.swing.JDialog {
 
             Date selectedDate = (Date) datePicker.getModel().getValue();
             Date selectedTime = (Date) timeSpinner.getValue();
-            if (selectedDate != null) {
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
 
+            if (selectedDate != null) {               
                 formattedDate = dateFormat.format(selectedDate) + " " + timeFormat.format(selectedTime);;
-
             } else {
                 JOptionPane.showMessageDialog(null, "Lo sentimos, la fecha no puede estar en blanco", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
