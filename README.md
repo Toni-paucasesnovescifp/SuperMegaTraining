@@ -45,6 +45,7 @@ Seguint la pràctica nº 4 del Mòdul de Desenvolupament d'Interfícies (data en
 
 - **Layout: MigLayout** S'ha utilitzat pràcticament a tota l'aplicació del MigLayout i per tots els components conteniddors (bàsicament JPanels i el JFrame principal)  el MigLayout. Aquest gestor de diseny de codi obert  permet una col.locació dels components amb molta flexibilitat, l'alineació i coordinació d'uns elements amb els altres, simplicitat i fàcil manteniment. S'utilitza molt amb aquest Layout la posició relativa (un davall l'altre, o al costat de l'altre, o a x distància de l'altre, o a certa distància del borde...). Alta potència pel cas de components que s'adapten al tamany del seu contenidor.   A totes les pantalles de l'aplicació (excepte el JDialog de LogIn) està present aquest Layout i permet poder fer la finestre més grossa o més petita (segons el dispositiu utilitzat, etc.) amb cert grau d'adaptació del seus components.
 A la pantalla de l'exemple seu veu la mateixa pantalla amb dos tamanys distints de pantalla. Se veu, per exemple, com hi ha uns botons que són flexibles segons l'ample de la pantalla i altres que no han modificat el tamany a pesar d'haver canviat el tamany de la pantalla.
+
 ![image](https://github.com/user-attachments/assets/43eab4d4-6053-4949-97d2-a077ae7d6ed6)
 ![image](https://github.com/user-attachments/assets/be1c3cfc-bc95-433b-b986-e6c3daa049a6)
 
@@ -60,7 +61,17 @@ A la pantalla de l'exemple seu veu la mateixa pantalla amb dos tamanys distints 
   ![image](https://github.com/user-attachments/assets/b49e1947-18bf-4914-8b88-ef85d803c15e)
 
 
-  - **Altres prestacions per millorar la usabilidad** Podríem
+  - **Altres prestacions per millorar la usabilidad** Podríem citar-ne algunes:
+       - quan som al JDialog del LogIn, **pitjant Enter** estant al camp de email o de password, s'executa automàticament el codi que hi ha associat al botó de LogIn. Amb això podem procedir més ràpids: sense amollar el teclat, feim la mateixa funció que si haguéssim pitjat el botó.
+       - **color de botó depenent de si feim hoover**: a la mateixa pantalla del LogIn hem utilitzat un color per quan estam damunt i un altre color per quan deixam d'estar-hi damunt amb el ratolí. 
+       - **Regular Expression**: quan estam a la pantalla del LogIn, si l'email conté l'estructura del patró que li hem definit, llavors el botó està habilitat, en cas contrari, el botó no està habilitat i no permet fer LogIn.  A més el propi camp d'introducció de l'email també canvia de color segons si és un email amb estructura correcte o no.
+       - el citat botó del punt anterior, també mostra un **ToolTip** (texte quan ens hi posam damunt), que a més, és **variable** segons si el botó està habilitat  (s'ha introduit un email amb l'estructura correcta) o no.
+       - de nou seguint amb la pantalla del LogIn, s'ha inclòs el procés de validació dins un **Thread** (fil). Amb això tenim que l'aplicació no queda bloquejada i totalment dedicada a aquest procés de fer el login. I, si per exemple, el procés del login s'allargàs molt per algun motiu, ens donaria la possiblitat de tancar la pantalla i no parlaríem d'un bloqueig total.
+       - **filtre/recerca:**  La pantalla on se veu el llistat dels usuaris ens permet filtrar entre els usuaris que contenen les lletres que li indicam al quadre de recerca. Això fa que, si en un moment s'arriben a tenir molts d'usuaris, trobar-lo serà més fàcil i ràpid.
+       - **ordre alfabètic:**  Els elements de al llista d'usuaris apareix ordenada alfabèticament.  També  la taula de workouts i la d'exercicis apareixen els registres ordenats pel seu Id.
+
+  ![image](https://github.com/user-attachments/assets/a8ec9322-8205-4163-a201-070aea8f9010)
+
 
 
 
