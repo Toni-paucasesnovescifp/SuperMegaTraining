@@ -17,8 +17,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import org.jdatepicker.impl.JDatePanelImpl;
@@ -88,36 +86,30 @@ public class AddChangeWorkouts extends javax.swing.JDialog {
             model.setSelected(false);
         }
         Properties p = new Properties();
-        //p.put("text.today", "Today");
-        //p.put("text.month", "Month");
-        //p.put("text.year", "Year");
         JDatePanelImpl datePanel = new JDatePanelImpl(model, p);
+
         datePicker = new JDatePickerImpl(datePanel, new DateLabelFormatter());
+        datePicker.setPreferredSize(new Dimension(150, datePicker.getPreferredSize().height));
 
         SpinnerDateModel timeModel = new SpinnerDateModel();
         timeSpinner = new JSpinner(timeModel);
         JSpinner.DateEditor timeEditor = new JSpinner.DateEditor(timeSpinner, "HH:mm:ss");
         timeSpinner.setEditor(timeEditor);
-
         timeSpinner.setVisible(true);
+        timeSpinner.setPreferredSize(new Dimension(100, timeSpinner.getPreferredSize().height));
 
         jTextFieldComentaris = new JTextField();
         jTextFieldComentaris.setPreferredSize(new Dimension(100, jTextFieldComentaris.getPreferredSize().height));
 
         jLabelTitol.setText("AFEGIR UN NOU WORKOUT");
-        jPanelAfegirEditarWorkouts.add(jLabelTitol, "span, align center , wrap");
 
+        jPanelAfegirEditarWorkouts.add(jLabelTitol, "span, align center , wrap");
         jPanelAfegirEditarWorkouts.add(jLabelComentaris);
         jPanelAfegirEditarWorkouts.add(jTextFieldComentaris, "grow, wrap");
-
         jPanelAfegirEditarWorkouts.add(jLabelData);
         jPanelAfegirEditarWorkouts.add(datePicker, "wrap");
-
         jPanelAfegirEditarWorkouts.add(jLabelHora);
         jPanelAfegirEditarWorkouts.add(timeSpinner, "wrap");
-
-        datePicker.setPreferredSize(new Dimension(150, datePicker.getPreferredSize().height));
-        timeSpinner.setPreferredSize(new Dimension(100, timeSpinner.getPreferredSize().height));
 
         add(jPanelAfegirEditarWorkouts, "grow, wrap");
 
@@ -125,20 +117,20 @@ public class AddChangeWorkouts extends javax.swing.JDialog {
 
         jButtonAfegirModificar = new JButton();
 
+        
+        // configuración del jButton para el caso del modo=Afegir
         if (this.modo.equals("afegir")) {
             jButtonAfegirModificar.setText("Afegir");
             jButtonAfegirModificar.setIcon(Utilitats.obtenirIcon("pulgar-arriba.png"));
             jButtonAfegirModificar.setMnemonic('A');
             jButtonAfegirModificar.setVisible(true);
 
-        } else {
-
         }
 
         jButtonAfegirModificar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Código a ejecutar cuando se presiona el botón "Afegir"
+                // el codi a executar del boto AfegirModificar depen de si estam en mode "afegir" o "modificar"
 
                 if (getModo().equals("afegir")) {
                     guardarNouWorkout();
@@ -157,14 +149,11 @@ public class AddChangeWorkouts extends javax.swing.JDialog {
         });
 
         buttonPanel.add(jButtonAfegirModificar, "grow");
-
         buttonPanel.add(jButtonSortir, "grow");
-
         add(buttonPanel, "grow, wrap");
 
         if (modo.equals("modificar")) {
             ajustosPantallaModeModificar();
-
         }
 
         pack();
@@ -182,12 +171,13 @@ public class AddChangeWorkouts extends javax.swing.JDialog {
         SimpleDateFormat dateTimeFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
         try {
             Date date = dateTimeFormat.parse(workoutModificar.getForDate());
-            model.setValue(date); // Configurar la fecha en el datePicker
-            timeSpinner.setValue(date); // Configurar la hora en el timeSpinner
+            model.setValue(date); // Configurar la data en el datePicker
+            timeSpinner.setValue(date); // Configurar l'hora en el timeSpinner
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
+        // si estam en mode modificar, canviam el texte i l'aspecte del botó
         jButtonAfegirModificar.setText("Guardar canvis");
         jButtonAfegirModificar.setIcon(Utilitats.obtenirIcon("pulgar-arriba.png"));
         jButtonAfegirModificar.setMnemonic('G');
@@ -201,18 +191,26 @@ public class AddChangeWorkouts extends javax.swing.JDialog {
         botoEliminarExercici.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Mostrar el cuadro de diálogo de confirmación
+              
+                //com,provam que hi hagi algun fila seleccionada a la taula d'exercicis
+                if (jTableExercicis.getSelectedRow()==-1) {
+                    JOptionPane.showMessageDialog(null, "Primerament hi ha d'haver algun exercici seleccionat", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                
+                int idExerciciSeleccionat = (int) jTableExercicis.getValueAt(jTableExercicis.getSelectedRow(), 0);
+              
+                // confirmació per l'usuari que realment bol eliminar l'exercici                
                 int result = JOptionPane.showConfirmDialog(null, "¿Segur que vol el.liminar l'exercici seleccionat?", "Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
-                // Verificar la selección del usuario
+                // Si l'usuari respon que "no" llavors s'acaba i no continiua amb l'execució del codi del mètode
                 if (result == JOptionPane.NO_OPTION) {
-                    // Si el usuario selecciona "No", ejecutar un return
                     return;
                 }
 
-                int idExerciciSeleccionat = (int) jTableExercicis.getValueAt(jTableExercicis.getSelectedRow(), 0);
+                
 
-                int affectedRows=0;
+                int affectedRows = 0;
                 try {
                     affectedRows = DataAccess.deleteFromExercicisWorkoutsTable(idExerciciSeleccionat, workoutModificar.getId());
                 } catch (SQLException ex) {
@@ -221,7 +219,7 @@ public class AddChangeWorkouts extends javax.swing.JDialog {
 
                 if (affectedRows > 0) {
                     actualizarTablaEjercicios(workoutModificar.getId());
-                    JOptionPane.showMessageDialog(null, "Exercici eliminat correctament", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Exercici eliminat correctament", "Èxit", JOptionPane.INFORMATION_MESSAGE);
                 } else {
                     JOptionPane.showMessageDialog(null, "No s'ha pogut eliminar cap exercici", "Error", JOptionPane.ERROR_MESSAGE);
                 }
@@ -233,18 +231,18 @@ public class AddChangeWorkouts extends javax.swing.JDialog {
             public void actionPerformed(ActionEvent e) {
                 ArrayList<Exercici> totsExercicis = DataAccess.getAllExercicis();
 
-                // Crear un JComboBox y añadir los exercicis
+                // Cream un JComboBox hi afegim els exercicis
                 JComboBox<String> comboBox = new JComboBox<>();
                 for (Exercici exercici : totsExercicis) {
                     comboBox.addItem(exercici.getId() + " - " + exercici.getDescripcio());
                 }
 
-                // Mostrar el JComboBox en un JOptionPane
+                // Mostrar el JComboBox dins d'un JOptionPane
                 int result = JOptionPane.showConfirmDialog(null, comboBox, "Seleccionar Exercici", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
                 int selectedId = 0;
                 int numeroInsercions = 0;
                 Exercici selectedExercici = null;
-                // Verificar si el usuario hizo clic en OK
+                // Verificar si el usuario hizo clic en OK, si és així seguim endavant. Si no, s'acaba l'execució
                 if (result == JOptionPane.OK_OPTION) {
                     // Obtener el exercici seleccionado
                     String selectedItem = (String) comboBox.getSelectedItem();
@@ -269,10 +267,11 @@ public class AddChangeWorkouts extends javax.swing.JDialog {
                     for (int i = 0; i < rowCount; i++) {
                         int id = (int) modelCopia.getValueAt(i, 0); // Obtener el valor de la primera columna (IdExercici)
                         if (id == selectedId) {
-                            jaExisteix = true; // El id ya está en la tabla
+                            jaExisteix = true; // El id ja existia dins el workout
                         }
                     }
 
+                    // només insertam l'exercici en cas que no existís ja.
                     if (!jaExisteix) {
 
                         numeroInsercions = DataAccess.insertExerciciPerWorkout(workoutModificar.getId(), selectedExercici);
@@ -348,14 +347,18 @@ public class AddChangeWorkouts extends javax.swing.JDialog {
         workoutPerAfegir.setId(numeroRegistreAfegit);
         main.setDarrerWorkoutAfegit(numeroRegistreAfegit);
 
-        JOptionPane.showMessageDialog(null, "El workout s'ha pogut guardar correctament. El número id és " + numeroRegistreAfegit, "Introducció Workout", JOptionPane.INFORMATION_MESSAGE, Utilitats.obtenirIcon("checklist.png"));
+        JOptionPane.showMessageDialog(null, "El workout s'ha pogut guardar correctament. El número id és " + numeroRegistreAfegit + ". Ara pot editar les dades, així com associar-hi alguns exercicis." , "Introducció Workout", JOptionPane.INFORMATION_MESSAGE, Utilitats.obtenirIcon("checklist.png"));
 
         // aquí convertim la pantalla d'afegir a la pantalla de modificar... entrarem en mode edició de les dades del workout que acabam de crear
         workoutModificar = workoutPerAfegir;
         setModo("modificar");
         pasAfegirAModificar = true;
-        ajustosPantallaModeModificar();
+        ajustosPantallaModeModificar();        
         pack();
+        this.setLocationRelativeTo(main);
+        revalidate();
+        repaint();
+        
 
     }
 
@@ -389,8 +392,6 @@ public class AddChangeWorkouts extends javax.swing.JDialog {
         }
 
         JOptionPane.showMessageDialog(null, "El workout s'ha pogut actualitzar correctament", "Introducció Workout", JOptionPane.INFORMATION_MESSAGE, Utilitats.obtenirIcon("checklist.png"));
-
-        
 
     }
 
@@ -434,11 +435,6 @@ public class AddChangeWorkouts extends javax.swing.JDialog {
 
     }
 
-    /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
-     */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

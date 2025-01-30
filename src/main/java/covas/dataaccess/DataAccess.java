@@ -26,7 +26,7 @@ public class DataAccess {
             String connectionUrl = "jdbc:sqlserver://localhost:1433;database=simulapdb;user=sa;password=Pwd1234;encrypt=false;trustServerCertificate=false;loginTimeout=10;";
             String connectionUrlAzure = "jdbc:sqlserver://simulapdbserver.database.windows.net:1433;database=simulapdb;user=simulapdbadmin@simulapdbserver;password=Pwd1234.;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;";
 
-            connection = DriverManager.getConnection(connectionUrlAzure);
+            connection = DriverManager.getConnection(connectionUrl);
 
         }
         catch (Exception e) {

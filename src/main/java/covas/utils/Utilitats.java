@@ -12,20 +12,20 @@ import javax.swing.ImageIcon;
 public class Utilitats {
     
         public static Image obtenirImage(String nomFitxer) {
-        // Obtener la URL del archivo de imagen
+        // Obtenir la URL de l'arxiu de imatge
         URL iconURL = Main.class.getResource("/images/"+nomFitxer);
         
         // Crear un ImageIcon a partir de la URL
         ImageIcon icon = new ImageIcon(iconURL);
         
-        // Obtener la imagen del icono
+        // Obtenir la imatge del icono
         Image image = icon.getImage();
         
         return image;
     }
 
         public static ImageIcon obtenirIcon(String nomFitxer) {
-        // Obtener la URL del archivo de imagen
+        // Obtenir la URL de l'arxiu de imatge
         URL iconURL = Main.class.getResource("/images/"+nomFitxer);
         
         // Crear un ImageIcon a partir de la URL

@@ -2,13 +2,21 @@ package covas.vistas;
 
 import covas.dataaccess.DataAccess;
 import covas.model.Usuari;
+import covas.utils.Utilitats;
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import net.miginfocom.swing.MigLayout;
 
 /**
@@ -18,10 +26,15 @@ import net.miginfocom.swing.MigLayout;
 public class VistaUsuaris extends javax.swing.JPanel {
 
     private Main main = null;
+       private JTextField jTextFieldTexteRecerca = new JTextField(20);
+       
 
     public VistaUsuaris(Main mainJframe) {
         initComponents();
         main = mainJframe;
+        
+        SwingUtilities.invokeLater(() -> jTextFieldTexteRecerca.requestFocus());
+        SwingUtilities.invokeLater(() -> jTextFieldTexteRecerca.grabFocus());
 
         // definim el layout per les instàncies de l'objecte VistaUsuaris
         setLayout(new MigLayout("fill, insets 1", "[grow, center]", "[grow, center]"));
@@ -38,25 +51,78 @@ public class VistaUsuaris extends javax.swing.JPanel {
         
         //definim el DefaultListModel al Jlist
         getListUsuarisInstructor().setModel(llistaBase);
+        
+        Color borderColor = new Color(255, 200, 0); // Color entre groc i taronja
+        Border border = BorderFactory.createLineBorder(borderColor, 5);
 
         
         // cream un jPanel amb MigLayout que durà tant el Jlist i el jLabel que presenta el Jlist
         JPanel panellJListUsuaris = new JPanel();
         panellJListUsuaris.setLayout(new MigLayout("fill, insets 1", "[grow, center]", "[]1[]"));
 
-        jLabelListaTitulo.setText("Estos son los usuarios a los que entrenas actualmente");
+        jLabelListaTitulo.setText("Llista d'usuaris que entrenes actualment");
         
+        JPanel jPanelRecerca = new JPanel(new MigLayout("fill, insets 1", "[grow, center]", "[]1[]"));
+        jPanelRecerca.add(jTextFieldTexteRecerca, "align center");
+        jTextFieldTexteRecerca.setToolTipText("introduzca el texto a buscar");
+        JLabel jLabelImageRecerca = new JLabel();
+        jLabelImageRecerca.setIcon(Utilitats.obtenirIcon("buscar.png"));
+        jPanelRecerca.add(jLabelImageRecerca);
+        jPanelRecerca.setBorder(border);
+        
+        
+        
+        
+        panellJListUsuaris.add(jPanelRecerca, "grow, align center, wrap");
+        panellJListUsuaris.add(jLabelListaTitulo, " align center,  wrap, gaptop 15");
+        panellJListUsuaris.add(jScrollPane2, "span, grow,  align center, wrap");
 
-        panellJListUsuaris.add(jLabelListaTitulo, " align center,  wrap");
-        panellJListUsuaris.add(jScrollPane2, "span,  align center, wrap");
-
-        // definim un marco per el jList
-        Color borderColor = new Color(255, 200, 0); // Color entre groc i taronja
-        Border border = BorderFactory.createLineBorder(borderColor, 5);
+        // definim un marco per el jList        
         jListUsuarisInstructor.setBorder(border);
-
-        //incorporam el jList dins el panell, definint les propietats de MigLayout
+         
+        
+        
+        //incorporam el panell del jList dins l'objecte principal, definint les propietats de MigLayout
         add(panellJListUsuaris, "span,  align center, wrap");
+        
+           //listener perquè el camp de text actualitzi el jList cada vegada que s'afegeix, elimina o canvia un caracter
+           // per això, sobreescrivim els 3 mètodes.
+         jTextFieldTexteRecerca.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                filtrarJList();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                filtrarJList();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                filtrarJList();
+            }
+
+            // és el mètode que s'executa cada vegada que hi ha un canvi al camp de text de recerca
+            private void filtrarJList() {
+                String texteRecerca = jTextFieldTexteRecerca.getText();
+                if (texteRecerca.isEmpty()) {
+                    jListUsuarisInstructor.setModel(llistaBase);
+                } else {
+                    DefaultListModel<String> filteredModel = new DefaultListModel<>();
+                    for (int i = 0; i < llistaBase.size(); i++) {
+                        String item = llistaBase.getElementAt(i).toString();
+                        if (item.toLowerCase().contains(texteRecerca.toLowerCase())) {
+                            filteredModel.addElement(item);
+                        }
+                    }
+                    jListUsuarisInstructor.setModel(filteredModel);
+                }
+            }
+        });
+        
+     
+        
     }
 
     public JList<String> getListUsuarisInstructor() {

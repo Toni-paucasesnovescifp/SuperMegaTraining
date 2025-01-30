@@ -191,6 +191,7 @@ public class Main extends javax.swing.JFrame {
     }
 
     public void abrirLogin() {
+        //obrim el jDialog per fer el login
         pnlLogIn = new LogIn(this, true);
         pnlLogIn.setLocationRelativeTo(this);
         pnlLogIn.setVisible(true);
@@ -198,6 +199,7 @@ public class Main extends javax.swing.JFrame {
     }
 
     public void addChangeWorkouts(String modo, Workout workoutModificar) {
+        //obrim el jDialog per afegir/ modificar workouts
         pnlAddChangeWorkouts = new AddChangeWorkouts(this, true, modo, workoutModificar);
         pnlAddChangeWorkouts.setLocationRelativeTo(this); // Centrar el JDialog respecte el JFrame principal
         pnlAddChangeWorkouts.setVisible(true);
@@ -272,11 +274,12 @@ public class Main extends javax.swing.JFrame {
             getContentPane().remove(getPnlVistaUsuaris());
         }
 
-        setPnlVistaUsuaris(new VistaUsuaris(this));
+        setPnlVistaUsuaris(new VistaUsuaris(this));        
         getContentPane().add(pnlVistaUsuaris, "span, grow, align center, wrap");
-
         revalidate();
         repaint();
+        
+        
 
     }
 
@@ -340,8 +343,9 @@ public class Main extends javax.swing.JFrame {
 
             Main mainInstance = new Main();
             
-             UIManager.put("logo", Utilitats.obtenirImage("logocompany.jpg")); // Ruta a tu archivo JPG    
-           // UIManager.put("logo", new ImageIcon(mainInstance.getClass().getResource("/images/logocompany.jpg"))); // Ruta a tu archivo JPG
+            //definim el logo de l'aplicació 
+            UIManager.put("logo", Utilitats.obtenirImage("logocompany.jpg")); 
+          
 
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
             e.printStackTrace();
