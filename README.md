@@ -18,7 +18,7 @@ SKETCHES
 
 
 
-<p align="center">**USER EXPERIENCE**</p>
+<p align="center"><b>USER EXPERIENCE</p></b>
 
 Seguint la pràctica nº 4 del Mòdul de Desenvolupament d'Interfícies (data entrega  30-01-2025), S'han inclòs molts d'elements per millorar la usabilitat a l'aplicació i, per tant, proporcionar una millor experiència a l'usuari.
 
