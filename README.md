@@ -43,7 +43,7 @@ Seguint la pràctica nº 4 del Mòdul de Desenvolupament d'Interfícies (data en
  
 - **Col.locació dels components de manera organitzada i atractiva** - Els components estan disposats pensant amb l'ordre lògic d'utilització, facilitat d'ús (totes les opcions són totalment intuitives) i, a la vegada, cercant en tot moment l'atractiu de la interfície. Per exemple, en una mateixa pantalla veim els workouts i just a la dreta els exercicis de què es compon. O en el cas d'afegir un workout, no apareixen els components per afegir exercicis, fins que no s'hagi primer donat d'alta el workout.
 
-- **Layout: MigLayout** S'ha utilitzat pràcticament a tota l'aplicació del MigLayout i per tots els components conteniddors (bàsicament JPanels i el JFrame principal)  el MigLayout. Aquest gestor de diseny de codi obert  permet una col.locació dels components amb molta flexibilitat, l'alineació i coordinació d'uns elements amb els altres, simplicitat i fàcil manteniment. S'utilitza molt amb aquest Layout la posició relativa (un davall l'altre, o al costat de l'altre, o a x distància de l'altre, o a certa distància del borde...). Alta potència pel cas de components que s'adapten al tamany del seu contenidor.   A totes les pantalles de l'aplicació (excepte el JDialog de LogIn) està present aquest Layout i permet poder fer la finestre més grossa o més petita (segons el dispositiu utilitzat, etc.) amb cert grau d'adaptació del seus components.
+- **Layout: MigLayout** S'ha utilitzat pràcticament a tota l'aplicació el MigLayout  per tots els components contenidors (bàsicament JPanels i el JFrame principal) . Aquest gestor de diseny de codi obert  permet una col.locació dels components a la interfície amb molta flexibilitat, l'alineació i coordinació d'uns elements amb els altres, simplicitat i fàcil manteniment. S'utilitza molt amb aquest Layout la posició relativa (un davall l'altre, o al costat de l'altre, o a x distància de l'altre, o a certa distància del borde...). Alta potència pel cas de components que s'adapten al tamany del seu contenidor.   A totes les pantalles de l'aplicació (excepte el JDialog de LogIn) està present aquest Layout i permet poder fer la finestre més grossa o més petita (segons el dispositiu utilitzat, etc.) amb cert grau d'adaptació del seus components.
 A la pantalla de l'exemple seu veu la mateixa pantalla amb dos tamanys distints de pantalla. Se veu, per exemple, com hi ha uns botons que són flexibles segons l'ample de la pantalla i altres que no han modificat el tamany a pesar d'haver canviat el tamany de la pantalla.
 
 ![image](https://github.com/user-attachments/assets/43eab4d4-6053-4949-97d2-a077ae7d6ed6)
@@ -68,9 +68,25 @@ A la pantalla de l'exemple seu veu la mateixa pantalla amb dos tamanys distints 
        - el citat botó del punt anterior, també mostra un **ToolTip** (texte quan ens hi posam damunt), que a més, és **variable** segons si el botó està habilitat  (s'ha introduit un email amb l'estructura correcta) o no.
        - de nou seguint amb la pantalla del LogIn, s'ha inclòs el procés de validació dins un **Thread** (fil). Amb això tenim que l'aplicació no queda bloquejada i totalment dedicada a aquest procés de fer el login. I, si per exemple, el procés del login s'allargàs molt per algun motiu, ens donaria la possiblitat de tancar la pantalla i no parlaríem d'un bloqueig total.
        - **filtre/recerca:**  La pantalla on se veu el llistat dels usuaris ens permet filtrar entre els usuaris que contenen les lletres que li indicam al quadre de recerca. Això fa que, si en un moment s'arriben a tenir molts d'usuaris, trobar-lo serà més fàcil i ràpid.
-       - **ordre alfabètic:**  Els elements de al llista d'usuaris apareix ordenada alfabèticament.  També  la taula de workouts i la d'exercicis apareixen els registres ordenats pel seu Id.
+       - **ordre alfabètic:**  Els elements de al llista d'usuaris apareix ordenada alfabèticament.  També  la taula de workouts i la d'exercicis apareixen els registres ordenats pel seu Id. El mateix que amb el filtre/recerca, trobar-lo serà més agradable, fàcil i ràpid.
+       - **Interacció amb l'usuari:** L'aplicació dóna contínuament missatges amigables: quan entram a l'aplicació i hem fet el login, quan sortim, demana confirmació a l'usuari del procés del borrat, confirma amb una frase d'èxit quan l'alta d'un workout ha funcionat correctament.... Això crea més proximitat amb l'usuari i una millor experiència.
+       - **aparició d'un calendari quan posam la data:** se desplega un DatePicker per introduir la data, la qual cosa fa molt més agradable i professional el procés d'introduir una data.
 
   ![image](https://github.com/user-attachments/assets/a8ec9322-8205-4163-a201-070aea8f9010)
+  ![image](https://github.com/user-attachments/assets/ea3b1498-8a63-4d76-af45-3ee7b8357835)
+  ![image](https://github.com/user-attachments/assets/362b73f1-f84b-43ac-be03-55dd7087d91f)
+  ![image](https://github.com/user-attachments/assets/6bc94211-d4cd-4369-8156-74a0e7d674ad)
+  ![image](https://github.com/user-attachments/assets/86cd3157-8f8b-4636-9671-119e68065c53)
+  ![image](https://github.com/user-attachments/assets/885046bd-e3da-48fd-8897-1724739e4698)
+  ![image](https://github.com/user-attachments/assets/66cf6267-a20a-49f8-bc9f-62e1ac7a8fe2)
+  ![image](https://github.com/user-attachments/assets/065ca009-51d6-4070-92a4-5f8ee86b1b88)
+
+
+
+  
+
+
+
 
 
 
