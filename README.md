@@ -18,3 +18,7 @@ SKETCHES
 
 
 
+USER EXPERIENCE
+S'han inclòs molts d'elements per millorar la usabilitat i, per tant, proporcionar una millor experiència a l'usuari.
+
+
