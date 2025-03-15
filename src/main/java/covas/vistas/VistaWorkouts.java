@@ -363,7 +363,7 @@ public class VistaWorkouts extends javax.swing.JPanel {
             modelExercicis.addRow(new Object[]{e.getId(), e.getNomExercici(), e.getDescripcio()});
         }
 
-        jLabelListaExercicis.setText("Això és el llisat d'exercicis del workout: " + workoutSeleccionat.getId());
+        jLabelListaExercicis.setText("Això és el llistat d'exercicis del workout: " + workoutSeleccionat.getId());
     }
 
     @SuppressWarnings("unchecked")
@@ -480,7 +480,7 @@ public class VistaWorkouts extends javax.swing.JPanel {
     private void jButtonBorrarWorkoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBorrarWorkoutActionPerformed
 
         if (modelExercicis.getRowCount()>0) {
-            JOptionPane.showMessageDialog(null, "No s'ha pgout eliminar el workout perquè té exercicis. Per el.liminar el workout, primer haurà d'el.liminar els exercicis associats", "Error", JOptionPane.ERROR_MESSAGE);            
+            JOptionPane.showMessageDialog(null, "No s'ha pogut eliminar el workout perquè té exercicis. Per el.liminar el workout, primer haurà d'el.liminar els exercicis associats", "Error", JOptionPane.ERROR_MESSAGE);            
             return;
         }
         

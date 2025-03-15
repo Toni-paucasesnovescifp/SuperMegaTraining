@@ -5,10 +5,13 @@ import covas.model.Usuari;
 import covas.utils.Utilitats;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -27,7 +30,7 @@ public class VistaUsuaris extends javax.swing.JPanel {
 
     private Main main = null;
        private JTextField jTextFieldTexteRecerca = new JTextField(20);
-       
+       private JDialog dialog;
 
     public VistaUsuaris(Main mainJframe) {
         initComponents();
@@ -79,6 +82,23 @@ public class VistaUsuaris extends javax.swing.JPanel {
 
         // definim un marco per el jList        
         jListUsuarisInstructor.setBorder(border);
+        
+        
+            jListUsuarisInstructor.addMouseMotionListener(new MouseMotionAdapter() {
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                int index = jListUsuarisInstructor.locationToIndex(e.getPoint());
+                if (index != -1) {
+                    String usuariMarcat = jListUsuarisInstructor.getModel().getElementAt(index);
+                    
+                } else {
+                    if (dialog != null) {
+                        dialog.setVisible(false);
+                    }
+                }
+            }
+        });
+        
          
         
         
@@ -124,6 +144,13 @@ public class VistaUsuaris extends javax.swing.JPanel {
      
         
     }
+    
+    
+    
+
+    
+    
+    
 
     public JList<String> getListUsuarisInstructor() {
         return this.jListUsuarisInstructor;
