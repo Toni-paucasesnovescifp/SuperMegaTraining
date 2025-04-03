@@ -45,9 +45,6 @@ public class Usuari {
      */
     private boolean instructor;
 
-    
-    
-    
     /**
      * Obtiene el identificador único del usuario.
      *

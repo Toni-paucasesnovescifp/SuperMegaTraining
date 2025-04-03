@@ -12,28 +12,46 @@ import java.util.ArrayList;
 import java.util.Properties;
 
 /**
+ * Clase que proporciona acceso a los datos del sistema, interactuando con la
+ * base de datos. Contiene métodos para realizar operaciones CRUD sobre
+ * usuarios, entrenamientos y ejercicios.
  *
  * @author Mike
  */
 public class DataAccess {
 
-    private static Connection getConnection()  {
+    /**
+     * Establece una conexión con la base de datos.
+     *
+     * @return Un objeto {@code Connection} que representa la conexión con la
+     * base de datos.
+     */
+    private static Connection getConnection() {
         Connection connection = null;
         Properties properties = new Properties();
         try {
             //properties.load(DataAccess.class.getClassLoader().getResourceAsStream("properties/application.properties"));
             //connection = DriverManager.getConnection(properties.getProperty("connectionUrl"));
-            String connectionUrl = "jdbc:sqlserver://localhost:1433;database=simulapdb;user=sa;password=Pwd1234;encrypt=false;trustServerCertificate=false;loginTimeout=10;";            
+            String connectionUrl = "jdbc:sqlserver://localhost:1433;database=simulapdb;user=sa;password=Pwd1234;encrypt=false;trustServerCertificate=false;loginTimeout=10;";
             String connectionStringAzureSQLServer = "jdbc:sqlserver://simulapsqlserver.database.windows.net:1433;database=simulapdb25;user=simulapdbadmin@simulapsqlserver;password=Pwd1234.;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;";
             connection = DriverManager.getConnection(connectionStringAzureSQLServer);
 
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return connection;
     }
 
+    /**
+     * Obtiene un usuario de la base de datos en función de su correo
+     * electrónico.
+     *
+     * @param email El correo electrónico del usuario.
+     * @return Un objeto {@code Usuari} que representa al usuario, o
+     * {@code null} si no existe.
+     * @throws Exception Si ocurre algún error durante la consulta.
+     * @throws SQLException Si ocurre un error relacionado con SQL.
+     */
     public static Usuari getUser(String email) throws Exception, SQLException {
         Usuari user = null;
         String sql = "SELECT * FROM Usuaris WHERE Email = ?";
@@ -49,7 +67,7 @@ public class DataAccess {
                 user.setInstructor(resultSet.getBoolean("Instructor"));
                 user.setFoto(resultSet.getBytes("Foto")); // Leer el campo Foto
             }
-        } 
+        }
 
         if (user.getId() == 0) {
             user = null;
@@ -57,6 +75,12 @@ public class DataAccess {
         return user;
     }
 
+    /**
+     * Obtiene todos los usuarios de la base de datos.
+     *
+     * @return Una lista de objetos {@code Usuari} que representa todos los
+     * usuarios.
+     */
     public static ArrayList<Usuari> getAllUsers() {
         ArrayList<Usuari> usuaris = new ArrayList<>();
         String sql = "SELECT * FROM Usuaris ";
@@ -79,6 +103,13 @@ public class DataAccess {
         return usuaris;
     }
 
+    /**
+     * Obtiene todos los usuarios asignados a un instructor específico.
+     *
+     * @param idInstructor El identificador único del instructor.
+     * @return Una lista de objetos {@code Usuari} que representa los usuarios
+     * del instructor.
+     */
     public static ArrayList<Usuari> getAllUsersByInstructor(int idInstructor) {
         ArrayList<Usuari> usuaris = new ArrayList<>();
         String sql = "SELECT * FROM Usuaris WHERE AssignedInstructor=?";
@@ -100,6 +131,14 @@ public class DataAccess {
         return usuaris;
     }
 
+    /**
+     * Obtiene una lista de entrenamientos (Workouts) asociados a un usuario.
+     *
+     * @param user El usuario cuyo historial de entrenamientos se quiere
+     * consultar.
+     * @return Una lista de objetos {@code Workout} que representa los
+     * entrenamientos del usuario.
+     */
     public static ArrayList<Workout> getWorkoutsPerUser(Usuari user) {
         ArrayList<Workout> workouts = new ArrayList<>();
         String sql = "SELECT Workouts.Id, Workouts.ForDate, Workouts.UserId, Workouts.Comments"
@@ -126,6 +165,14 @@ public class DataAccess {
 
     }
 
+    /**
+     * Recupera todos los ejercicios asociados a un entrenamiento específico.
+     *
+     * @param workout El objeto Workout que representa el entrenamiento del cual
+     * se quieren obtener los ejercicios.
+     * @return Una lista de objetos {@code Exercici} que contiene los ejercicios
+     * asociados al entrenamiento.
+     */
     public static ArrayList<Exercici> getExercicisPerWorkout(Workout workout) {
         ArrayList<Exercici> exercicis = new ArrayList<>();
         String sql = "SELECT ExercicisWorkouts.IdExercici,"
@@ -151,6 +198,12 @@ public class DataAccess {
         return exercicis;
     }
 
+    /**
+     * Recupera todos los ejercicios disponibles en la base de datos.
+     *
+     * @return Una lista de objetos {@code Exercici} que contiene todos los
+     * ejercicios.
+     */
     public static ArrayList<Exercici> getAllExercicis() {
         ArrayList<Exercici> exercicis = new ArrayList<>();
         String sql = "SELECT Id, Exercicis.NomExercici, Exercicis.Descripcio, Exercicis.DemoFoto"
@@ -174,6 +227,14 @@ public class DataAccess {
         return exercicis;
     }
 
+    /**
+     * Registra un nuevo usuario en la tabla "Usuaris" de la base de datos.
+     *
+     * @param u El objeto {@code Usuari} que contiene los datos del usuario a
+     * registrar.
+     * @return El identificador único del nuevo usuario, o 0 si la operación
+     * falló.
+     */
     public static int registerUser(Usuari u) {
         String sql = "INSERT INTO dbo.Usuaris (Nom, Email, PasswordHash, Instructor)"
                 + " VALUES (?,?,?,?)"
@@ -192,12 +253,28 @@ public class DataAccess {
         return 0;
     }
 
+    /**
+     * Inserta un entrenamiento y sus ejercicios asociados en la base de datos.
+     * Este proceso debe realizarse dentro de una transacción de SQL.
+     *
+     * @param w El objeto {@code Workout} que representa el entrenamiento a
+     * insertar.
+     * @param exercicis Una lista de objetos {@code Exercici} que contiene los
+     * ejercicios asociados al entrenamiento.
+     */
     public static void insertWorkout(Workout w, ArrayList<Exercici> exercicis) {
         // The following should be done in a SQL transaction
         int newWorkoutId = insertToWorkoutTable(w);
         insertExercisesPerWorkout(newWorkoutId, exercicis);
     }
 
+    /**
+     * Inserta un nuevo entrenamiento en la base de datos y devuelve su ID
+     * generado.
+     *
+     * @param w El entrenamiento que se desea insertar.
+     * @return El ID del entrenamiento recién creado, o 0 si ocurre un error.
+     */
     public static int insertToWorkoutTable(Workout w) {
         String sql = "INSERT INTO dbo.Workouts (ForDate, UserId, Comments)"
                 + " VALUES (?,?,?)";
@@ -226,6 +303,15 @@ public class DataAccess {
         return 0;
     }
 
+    /**
+     * Elimina un entrenamiento (workout) de la tabla "Workouts" en la base de
+     * datos.
+     *
+     * @param workoutId El identificador único del entrenamiento que se desea
+     * eliminar.
+     * @return El último identificador generado si la operación tuvo éxito, o 0
+     * en caso contrario.
+     */
     public static int deleteFromWorkoutTable(int workoutId) {
         String sql = "delete from dbo.Workouts where Id=?";
 
@@ -249,6 +335,17 @@ public class DataAccess {
         return 0;
     }
 
+    /**
+     * Actualiza un entrenamiento (workout) en la tabla "Workouts" de la base de
+     * datos.
+     *
+     * @param nouForDate La nueva fecha y hora del entrenamiento en formato
+     * String.
+     * @param nouComments Los nuevos comentarios asociados al entrenamiento.
+     * @param workoutId El identificador único del entrenamiento a actualizar.
+     * @return El último identificador generado si la operación tuvo éxito, o 0
+     * en caso contrario.
+     */
     public static int updateFromWorkoutTable(String nouForDate, String nouComments, int workoutId) {
         String sql = "update dbo.Workouts set  comments=?, ForDate=? where Id=?";
 
@@ -274,6 +371,16 @@ public class DataAccess {
         return 0;
     }
 
+    /**
+     * Inserta múltiples ejercicios asociados a un entrenamiento en la base de
+     * datos.
+     *
+     * @param wId El identificador único del entrenamiento al que se asociarán
+     * los ejercicios.
+     * @param exercicis Una lista de ejercicios a asociar al entrenamiento.
+     * @return El número total de ejercicios insertados, o 0 si ocurrió un
+     * error.
+     */
     private static int insertExercisesPerWorkout(int wId, ArrayList<Exercici> exercicis) {
         for (Exercici e : exercicis) {
             int rowsAffected = insertExerciciPerWorkout(wId, e);
@@ -284,6 +391,15 @@ public class DataAccess {
         return exercicis.size();
     }
 
+    /**
+     * Inserta un ejercicio asociado a un entrenamiento en la tabla
+     * "ExercicisWorkouts".
+     *
+     * @param wId El identificador único del entrenamiento al que se asociará el
+     * ejercicio.
+     * @param e El objeto ejercicio que se desea asociar.
+     * @return El número de filas afectadas por la operación.
+     */
     public static int insertExerciciPerWorkout(int wId, Exercici e) {
         String sql = "INSERT INTO dbo.ExercicisWorkouts (IdWorkout, IdExercici)"
                 + " VALUES (?,?)";
@@ -298,6 +414,15 @@ public class DataAccess {
         return 0;
     }
 
+    /**
+     * Elimina un registro específico en las tablas "Intents" y
+     * "ExercicisWorkouts" de la base de datos.
+     *
+     * @param IdExercici El identificador único del ejercicio.
+     * @param IdWorkout El identificador único del entrenamiento.
+     * @return El número de filas afectadas en la tabla "ExercicisWorkouts".
+     * @throws SQLException Si ocurre un error durante la operación.
+     */
     public static int deleteFromExercicisWorkoutsTable(int IdExercici, int IdWorkout) throws SQLException {
         String deleteIntentsSql = "DELETE FROM dbo.Intents WHERE IdExerciciWorkout IN (SELECT id FROM dbo.ExercicisWorkouts WHERE IdExercici = ? AND IdWorkout = ?)";
         String deleteExercicisWorkoutsSql = "DELETE FROM dbo.ExercicisWorkouts WHERE IdExercici = ? AND IdWorkout = ?";
@@ -318,7 +443,7 @@ public class DataAccess {
                 return affectedRows;
             }
 
-        } 
+        }
         //return 0;
     }
 
