@@ -34,6 +34,10 @@ import javax.swing.table.JTableHeader;
 import net.miginfocom.swing.MigLayout;
 
 /**
+ * Clase que permite agregar o modificar entrenamientos (Workouts). Contiene la
+ * funcionalidad necesaria para gestionar las características de un
+ * entrenamiento, como la fecha, hora, comentarios, y ejercicios asociados. Esta
+ * clase utiliza un cuadro de diálogo (JDialog) como interfaz gráfica.
  *
  * @author Toni Covas
  */
@@ -53,24 +57,94 @@ public class AddChangeWorkouts extends javax.swing.JDialog {
         this.modo = modo;
     }
 
+    /**
+     * Instancia principal de la aplicación.
+     */
     private Main main = null;
+
+    /**
+     * Selector de fecha para asignar una fecha al entrenamiento.
+     */
     private JDatePickerImpl datePicker;
+
+    /**
+     * Campo de texto para agregar comentarios al entrenamiento.
+     */
     private JTextField jTextFieldComentaris;
+
+    /**
+     * Selector de hora para asignar una hora al entrenamiento.
+     */
     private JSpinner timeSpinner;
+
+    /**
+     * Objeto que contiene los datos del entrenamiento que se desea modificar.
+     */
     private Workout workoutModificar;
+
+    /**
+     * Modo de operación (puede ser "afegir" para agregar o "modificar" para
+     * editar).
+     */
     private String modo;
+
+    /**
+     * Tabla para mostrar los ejercicios asociados al entrenamiento.
+     */
     private JTable jTableExercicis;
+
+    /**
+     * Modelo de datos para la tabla de ejercicios.
+     */
     private DefaultTableModel modelExercicis;
+
+    /**
+     * Objeto que contiene el entrenamiento seleccionado.
+     */
     private Workout workoutSeleccionat;
+
+    /**
+     * Objeto para almacenar temporalmente un entrenamiento nuevo.
+     */
     private Workout workoutPerAfegir = null;
+
+    /**
+     * Botón para agregar o modificar entrenamientos.
+     */
     private JButton jButtonAfegirModificar;
+
+    /**
+     * Modelo de datos para manejar la fecha seleccionada.
+     */
     private UtilDateModel model;
+
+    /**
+     * Bandera para controlar el estado de cambio de un entrenamiento de
+     * "Agregar" a "Modificar".
+     */
     private boolean pasAfegirAModificar = false;
+
+    /**
+     * Formateador de fecha para mostrar y guardar la fecha en formato
+     * "yyyy-MM-dd".
+     */
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+    /**
+     * Formateador de tiempo para mostrar y guardar la hora en formato
+     * "HH:mm:ss".
+     */
     private SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
 
     /**
-     * Creates new form AddChangeWorkouts
+     * Constructor que crea el cuadro de diálogo para agregar o modificar
+     * entrenamientos.
+     *
+     * @param parent El marco principal de la aplicación.
+     * @param modal Indica si el cuadro de diálogo es modal.
+     * @param modo El modo de operación ("afegir" o "modificar").
+     * @param workoutModificar El entrenamiento que se desea modificar (nulo si
+     * se va a agregar uno nuevo).
      */
     public AddChangeWorkouts(java.awt.Frame parent, boolean modal, String modo, Workout workoutModificar) {
         super(parent, modal);
@@ -119,7 +193,6 @@ public class AddChangeWorkouts extends javax.swing.JDialog {
 
         jButtonAfegirModificar = new JButton();
 
-        
         // configuración del jButton para el caso del modo=Afegir
         if (this.modo.equals("afegir")) {
             jButtonAfegirModificar.setText("Afegir");
@@ -163,6 +236,10 @@ public class AddChangeWorkouts extends javax.swing.JDialog {
 
     }
 
+    /**
+     * Configura la interfaz gráfica dependiendo del modo de operación. Cambia
+     * las etiquetas, botones y componentes según el modo.
+     */
     public void ajustosPantallaModeModificar() {
 
         jLabelTitol.setText("MODIFICAR EL WORKOUT " + workoutModificar.getId());
@@ -193,15 +270,15 @@ public class AddChangeWorkouts extends javax.swing.JDialog {
         botoEliminarExercici.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-              
+
                 //com,provam que hi hagi algun fila seleccionada a la taula d'exercicis
-                if (jTableExercicis.getSelectedRow()==-1) {
+                if (jTableExercicis.getSelectedRow() == -1) {
                     JOptionPane.showMessageDialog(null, "Primerament hi ha d'haver algun exercici seleccionat", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-                
+
                 int idExerciciSeleccionat = (int) jTableExercicis.getValueAt(jTableExercicis.getSelectedRow(), 0);
-              
+
                 // confirmació per l'usuari que realment bol eliminar l'exercici                
                 int result = JOptionPane.showConfirmDialog(null, "¿Segur que vol el.liminar l'exercici seleccionat?", "Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
@@ -209,8 +286,6 @@ public class AddChangeWorkouts extends javax.swing.JDialog {
                 if (result == JOptionPane.NO_OPTION) {
                     return;
                 }
-
-                
 
                 int affectedRows = 0;
                 try {
@@ -312,6 +387,11 @@ public class AddChangeWorkouts extends javax.swing.JDialog {
 
     }
 
+    /**
+     * Método para guardar un nuevo entrenamiento (Workout). Recupera la fecha,
+     * hora, comentarios y detalles del usuario seleccionados, y lo inserta en
+     * la base de datos.
+     */
     public void guardarNouWorkout() {
         workoutPerAfegir = new Workout();
         String formattedDate;
@@ -346,21 +426,25 @@ public class AddChangeWorkouts extends javax.swing.JDialog {
         workoutPerAfegir.setId(numeroRegistreAfegit);
         main.setDarrerWorkoutAfegit(numeroRegistreAfegit);
 
-        JOptionPane.showMessageDialog(null, "El workout s'ha pogut guardar correctament. El número id és " + numeroRegistreAfegit + ". Ara pot editar les dades, així com associar-hi alguns exercicis." , "Introducció Workout", JOptionPane.INFORMATION_MESSAGE, Utilitats.obtenirIcon("checklist.png"));
+        JOptionPane.showMessageDialog(null, "El workout s'ha pogut guardar correctament. El número id és " + numeroRegistreAfegit + ". Ara pot editar les dades, així com associar-hi alguns exercicis.", "Introducció Workout", JOptionPane.INFORMATION_MESSAGE, Utilitats.obtenirIcon("checklist.png"));
 
         // aquí convertim la pantalla d'afegir a la pantalla de modificar... entrarem en mode edició de les dades del workout que acabam de crear
         workoutModificar = workoutPerAfegir;
         setModo("modificar");
         pasAfegirAModificar = true;
-        ajustosPantallaModeModificar();        
+        ajustosPantallaModeModificar();
         pack();
         this.setLocationRelativeTo(main);
         revalidate();
         repaint();
-        
 
     }
 
+    /**
+     * Actualiza un entrenamiento existente en la base de datos. Recupera las
+     * nuevas configuraciones de fecha, hora y comentarios, y actualiza el
+     * registro correspondiente en la base de datos.
+     */
     public void actualitzarWorkout() {
         try {
 
@@ -369,7 +453,7 @@ public class AddChangeWorkouts extends javax.swing.JDialog {
             Date selectedDate = (Date) datePicker.getModel().getValue();
             Date selectedTime = (Date) timeSpinner.getValue();
 
-            if (selectedDate != null) {               
+            if (selectedDate != null) {
                 formattedDate = dateFormat.format(selectedDate) + " " + timeFormat.format(selectedTime);;
             } else {
                 JOptionPane.showMessageDialog(null, "Lo sentimos, la fecha no puede estar en blanco", "Error", JOptionPane.ERROR_MESSAGE);
@@ -391,6 +475,11 @@ public class AddChangeWorkouts extends javax.swing.JDialog {
 
     }
 
+    /**
+     * Crea una tabla para listar los ejercicios asociados al entrenamiento
+     * actual. Configura la tabla y el modelo de datos con las columnas
+     * necesarias.
+     */
     public void crearTaulaExercicis() {
         jTableExercicis = new JTable();
         JTableHeader thExercicis = jTableExercicis.getTableHeader();
@@ -403,6 +492,12 @@ public class AddChangeWorkouts extends javax.swing.JDialog {
         actualizarTablaEjercicios(workoutModificar.getId());
     }
 
+    /**
+     * Actualiza la tabla de ejercicios asociados a un entrenamiento específico.
+     * Recupera los ejercicios desde la base de datos y los muestra en la tabla.
+     *
+     * @param idWorkout El identificador único del entrenamiento.
+     */
     public void actualizarTablaEjercicios(int idWorkout) {
 
         Usuari usuariSeleccionat = null;
@@ -479,7 +574,20 @@ public class AddChangeWorkouts extends javax.swing.JDialog {
     }//GEN-LAST:event_jButtonSortirActionPerformed
 
     /**
-     * @param args the command line arguments
+     * Método principal que configura y ejecuta la aplicación. <br>
+     *
+     * 1. Configura la apariencia (Look and Feel) de la interfaz gráfica,
+     * intentando aplicar el estilo "Nimbus" si está disponible.<br>
+     * 2. Crea y muestra un cuadro de diálogo (JDialog) para agregar o modificar
+     * entrenamientos (Workouts).<br>
+     * 3. Usa un hilo de la EventQueue para garantizar que la interfaz gráfica
+     * se inicialice correctamente.<br>
+     *
+     * @param args Los argumentos de línea de comandos:<br>
+     * - args[0]: El modo de operación ("afegir" para agregar o "modificar" para
+     * editar).<br>
+     * - args[1]: Identificador o comentarios iniciales del entrenamiento
+     * (Workout) que se va a modificar.<br>
      */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */

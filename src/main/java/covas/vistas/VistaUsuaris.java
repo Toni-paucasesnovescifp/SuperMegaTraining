@@ -23,19 +23,32 @@ import javax.swing.event.DocumentListener;
 import net.miginfocom.swing.MigLayout;
 
 /**
+ * Clase que representa la vista de usuarios asignados a un instructor. Esta
+ * vista permite visualizar, buscar y seleccionar usuarios que están bajo la
+ * supervisión del instructor activo.
+ *
+ * Proporciona funcionalidad para filtrar la lista de usuarios y gestionar la
+ * interacción mediante eventos de ratón.
  *
  * @author Toni Covas
  */
 public class VistaUsuaris extends javax.swing.JPanel {
 
     private Main main = null;
-       private JTextField jTextFieldTexteRecerca = new JTextField(20);
-       private JDialog dialog;
+    private JTextField jTextFieldTexteRecerca = new JTextField(20);
+    private JDialog dialog;
 
+    /**
+     * Constructor de la clase VistaUsuaris. Inicializa la vista de usuarios,
+     * configura el diseño y establece el comportamiento interactivo de sus
+     * elementos.
+     *
+     * @param mainJframe La ventana principal que contiene esta vista.
+     */
     public VistaUsuaris(Main mainJframe) {
         initComponents();
         main = mainJframe;
-        
+
         SwingUtilities.invokeLater(() -> jTextFieldTexteRecerca.requestFocus());
         SwingUtilities.invokeLater(() -> jTextFieldTexteRecerca.grabFocus());
 
@@ -51,20 +64,19 @@ public class VistaUsuaris extends javax.swing.JPanel {
             llistaBase.add(i, usuaris.get(i).getNom());
 
         }
-        
+
         //definim el DefaultListModel al Jlist
         getListUsuarisInstructor().setModel(llistaBase);
-        
+
         Color borderColor = new Color(255, 200, 0); // Color entre groc i taronja
         Border border = BorderFactory.createLineBorder(borderColor, 5);
 
-        
         // cream un jPanel amb MigLayout que durà tant el Jlist i el jLabel que presenta el Jlist
         JPanel panellJListUsuaris = new JPanel();
         panellJListUsuaris.setLayout(new MigLayout("fill, insets 1", "[grow, center]", "[]1[]"));
 
         jLabelListaTitulo.setText("Llista d'usuaris que entrenes actualment");
-        
+
         JPanel jPanelRecerca = new JPanel(new MigLayout("fill, insets 1", "[grow, center]", "[]1[]"));
         jPanelRecerca.add(jTextFieldTexteRecerca, "align center");
         jTextFieldTexteRecerca.setToolTipText("introduzca el texto a buscar");
@@ -72,25 +84,21 @@ public class VistaUsuaris extends javax.swing.JPanel {
         jLabelImageRecerca.setIcon(Utilitats.obtenirIcon("buscar.png"));
         jPanelRecerca.add(jLabelImageRecerca);
         jPanelRecerca.setBorder(border);
-        
-        
-        
-        
+
         panellJListUsuaris.add(jPanelRecerca, "grow, align center, wrap");
         panellJListUsuaris.add(jLabelListaTitulo, " align center,  wrap, gaptop 15");
         panellJListUsuaris.add(jScrollPane2, "span, grow,  align center, wrap");
 
         // definim un marco per el jList        
         jListUsuarisInstructor.setBorder(border);
-        
-        
-            jListUsuarisInstructor.addMouseMotionListener(new MouseMotionAdapter() {
+
+        jListUsuarisInstructor.addMouseMotionListener(new MouseMotionAdapter() {
             @Override
             public void mouseMoved(MouseEvent e) {
                 int index = jListUsuarisInstructor.locationToIndex(e.getPoint());
                 if (index != -1) {
                     String usuariMarcat = jListUsuarisInstructor.getModel().getElementAt(index);
-                    
+
                 } else {
                     if (dialog != null) {
                         dialog.setVisible(false);
@@ -98,16 +106,13 @@ public class VistaUsuaris extends javax.swing.JPanel {
                 }
             }
         });
-        
-         
-        
-        
+
         //incorporam el panell del jList dins l'objecte principal, definint les propietats de MigLayout
         add(panellJListUsuaris, "span,  align center, wrap");
-        
-           //listener perquè el camp de text actualitzi el jList cada vegada que s'afegeix, elimina o canvia un caracter
-           // per això, sobreescrivim els 3 mètodes.
-         jTextFieldTexteRecerca.getDocument().addDocumentListener(new DocumentListener() {
+
+        //listener perquè el camp de text actualitzi el jList cada vegada que s'afegeix, elimina o canvia un caracter
+        // per això, sobreescrivim els 3 mètodes.
+        jTextFieldTexteRecerca.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
                 filtrarJList();
@@ -140,18 +145,14 @@ public class VistaUsuaris extends javax.swing.JPanel {
                 }
             }
         });
-        
-     
-        
+
     }
-    
-    
-    
 
-    
-    
-    
-
+    /**
+     * Obtiene la lista de usuarios asignados al instructor.
+     *
+     * @return Un JList que contiene los nombres de los usuarios.
+     */
     public JList<String> getListUsuarisInstructor() {
         return this.jListUsuarisInstructor;
     }
@@ -191,12 +192,17 @@ public class VistaUsuaris extends javax.swing.JPanel {
         jLabelListaTitulo.setBounds(20, 230, 520, 16);
     }// </editor-fold>//GEN-END:initComponents
 
-    // definim que en fer click al jList se mos obri la pantalla dels workouts
+    /**
+     * Acción ejecutada al hacer clic en un usuario de la lista. Carga la vista
+     * de entrenamientos del usuario seleccionado.
+     *
+     * @param evt Evento generado al hacer clic en el JList.
+     */
     private void jListUsuarisInstructorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jListUsuarisInstructorMouseClicked
         main.getContentPane().remove(this);
         main.revalidate();
         main.repaint();
-        main.carregarLlistaWorkOutsUsuari(jListUsuarisInstructor.getSelectedValue());    
+        main.carregarLlistaWorkOutsUsuari(jListUsuarisInstructor.getSelectedValue());
 
     }//GEN-LAST:event_jListUsuarisInstructorMouseClicked
 

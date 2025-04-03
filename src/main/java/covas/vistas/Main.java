@@ -18,24 +18,89 @@ import javax.swing.UnsupportedLookAndFeelException;
 import net.miginfocom.swing.MigLayout;
 
 /**
+ * Clase principal de la aplicación que gestiona la interfaz gráfica y las
+ * interacciones entre los diferentes paneles y componentes. Extiende
+ * javax.swing.JFrame y sirve como ventana principal del programa.
+ *
+ *
+ * Funcionalidades principales: - Gestión del usuario activo y del usuario
+ * seleccionado. <br>
+ * - Integración de múltiples paneles como Login, Vista de usuarios, Workouts,
+ * <br>
+ * y panel principal. <br>
+ * - Configuración y personalización de la interfaz gráfica, incluyendo layouts
+ * y propiedades del JFrame. <br>
+ *
+ *
  *
  * @author Toni Covas
+ * @version 02/04/2025
  */
 public class Main extends javax.swing.JFrame {
 
-    
-
+    /**
+     * Usuario actualmente autenticado.
+     */
     private Usuari usuariActiu = null;
+
+    /**
+     * Acceso a la base de datos.
+     */
     private DataAccess da = new DataAccess();
+
+    /**
+     * Usuario seleccionado en la interfaz.
+     */
     private Usuari usuariSeleccionat = null;
+
+    /**
+     * Nombre del usuario seleccionado.
+     */
     private String usuariSeleccionatTexte = "";
+
+    /**
+     * Panel principal de la aplicación.
+     */
     private MainJPanel pnlMain;
+
+    /**
+     * Panel para visualizar usuarios.
+     */
     private VistaUsuaris pnlVistaUsuaris;
+
+    /**
+     * Panel para visualizar entrenamientos.
+     */
     private VistaWorkouts pnlVistaWorkouts;
+
+    /**
+     * Panel de inicio de sesión.
+     */
     private LogIn pnlLogIn;
+
+    /**
+     * Panel para añadir o modificar entrenamientos.
+     */
     private AddChangeWorkouts pnlAddChangeWorkouts;
+
+    /**
+     * Identificador del último entrenamiento agregado.
+     */
     private int darrerWorkoutAfegit;
 
+    /**
+     * Constructor de la clase Main. Inicializa los componentes gráficos,
+     * configura la interfaz gráfica y define el diseño general de la
+     * aplicación.
+     *
+     * Funcionalidades principales: <br>
+     * - Inicializa y actualiza los componentes del JFrame principal.<br>
+     * - Configura la disposición gráfica utilizando MigLayout.<br>
+     * - Define el logo de la aplicación como icono del JFrame principal.<br>
+     * - Configura el panel de login (jPanelLogin) y su visibilidad inicial.<br>
+     * - Añade y organiza los paneles principales en el JFrame.<br>
+     * - Centra el JFrame en la pantalla y ajusta su tamaño automáticamente.<br>
+     */
     public Main() {
 
         initComponents();
@@ -166,38 +231,69 @@ public class Main extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Establece el usuario activo.
+     */
     public void setUsuariActiu(Usuari usuariActiu) {
         this.usuariActiu = usuariActiu;
     }
 
+    /**
+     * Obtiene el usuario activo.
+     */
     public Usuari getUsuariActiu() {
         return usuariActiu;
     }
 
+    /**
+     * Obtiene el usuario seleccionado.
+     */
     public Usuari getUsuariSeleccionat() {
         return usuariSeleccionat;
     }
 
+    /**
+     * Obtiene el texto del usuario seleccionado.
+     */
     public String getUsuariSeleccionatTexte() {
         return usuariSeleccionatTexte;
     }
 
+    /**
+     * Establece el texto del usuario seleccionado.
+     */
     public void setUsuariSeleccionatTexte(String usuariSeleccionatTexte) {
         this.usuariSeleccionatTexte = usuariSeleccionatTexte;
     }
 
+    /**
+     * Establece el usuario seleccionado.
+     */
     public void setUsuariSeleccionat(Usuari usuari) {
         this.usuariSeleccionat = usuari;
     }
 
+    /**
+     * Abre un cuadro de diálogo (JDialog) para realizar el inicio de sesión. El
+     * cuadro de diálogo se centra automáticamente respecto a la ventana
+     * principal y se hace visible al usuario.
+     */
     public void abrirLogin() {
-        //obrim el jDialog per fer el login
         pnlLogIn = new LogIn(this, true);
         pnlLogIn.setLocationRelativeTo(this);
         pnlLogIn.setVisible(true);
-
     }
 
+    /**
+     * Abre un cuadro de diálogo (JDialog) para añadir o modificar un
+     * entrenamiento (Workout). Este método inicializa y muestra el panel
+     * correspondiente para realizar las acciones de agregar o modificar según
+     * el modo indicado.
+     *
+     * @param modo Especifica el modo de operación: "añadir" o "modificar".
+     * @param workoutModificar El objeto Workout que se debe modificar, o null
+     * si se va a añadir uno nuevo.
+     */
     public void addChangeWorkouts(String modo, Workout workoutModificar) {
         //obrim el jDialog per afegir/ modificar workouts
         pnlAddChangeWorkouts = new AddChangeWorkouts(this, true, modo, workoutModificar);
@@ -205,7 +301,13 @@ public class Main extends javax.swing.JFrame {
         pnlAddChangeWorkouts.setVisible(true);
     }
 
-
+    /**
+     * Acción asociada al botón de cierre de sesión (Log Out). Muestra un
+     * mensaje de despedida, oculta el panel de login y elimina los paneles
+     * asociados al usuario activo. Además, restablece la interfaz principal.
+     *
+     * @param evt Evento generado al hacer clic en el botón de Log Out.
+     */
     private void jButtonLogOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLogOutActionPerformed
 
         JOptionPane.showMessageDialog(this, "Hasta Luego " + jLabelUsuariRegistrat.getText() + " !.  Su sesión ha sido desconectada", "Logout", JOptionPane.INFORMATION_MESSAGE, Utilitats.obtenirIcon("adios.png"));
@@ -223,11 +325,23 @@ public class Main extends javax.swing.JFrame {
 
     }//GEN-LAST:event_jButtonLogOutActionPerformed
 
+    /**
+     * Acción asociada al elemento del menú para salir de la aplicación.
+     * Finaliza la ejecución del programa.
+     *
+     * @param evt Evento generado al seleccionar la opción "Salir" en el menú.
+     */
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         System.exit(0);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
-
+    /**
+     * Acción asociada al elemento del menú "Acerca de". Muestra un cuadro de
+     * diálogo con información sobre la aplicación.
+     *
+     * @param evt Evento generado al seleccionar la opción "Acerca de" en el
+     * menú.
+     */
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         // botó del menú about
         final JOptionPane pane = new JOptionPane("Aplicació creada per Toni Covas Nicolau\nVersión 1.0\n\nGrau Superior DAM - Desenvolupament aplicaciones multiplataforma\nMòdul: Desenvolupament d'interfícies \nCIFP Pau Casesnoves");
@@ -242,6 +356,13 @@ public class Main extends javax.swing.JFrame {
 
     }//GEN-LAST:event_jMenu1KeyPressed
 
+    /**
+     * Acción asociada al elemento del menú para mostrar la lista de usuarios.
+     * Recupera la lista de usuarios del sistema y la imprime en la consola.
+     *
+     * @param evt Evento generado al seleccionar la opción correspondiente en el
+     * menú.
+     */
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
         // enseñar lista de usuarios por consola
         ArrayList<Usuari> usuaris = DataAccess.getAllUsers();
@@ -254,7 +375,10 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     /**
-     * @param args the command line arguments
+     * Registra al usuario activo en la aplicación. Actualiza el panel principal
+     * y muestra el panel de login con el nombre del usuario activo.
+     *
+     * @param usuari El objeto Usuari que se registrará como usuario activo.
      */
     public void registrarUsuariActiu(Usuari usuari) {
         pnlMain.getJLabelSignIn().setVisible(false);
@@ -264,8 +388,12 @@ public class Main extends javax.swing.JFrame {
         jPanelLogin.setVisible(true);
     }
 
+    /**
+     * Carga y muestra la lista de usuarios del instructor en el panel
+     * correspondiente. Si ya existen paneles previos, estos son eliminados
+     * antes de añadir el nuevo panel.
+     */
     public void carregarLlistaUsuarisInstructor() {
-
         if (pnlVistaWorkouts != null) {
             getContentPane().remove(getPnlVistaWorkouts());
         }
@@ -274,15 +402,20 @@ public class Main extends javax.swing.JFrame {
             getContentPane().remove(getPnlVistaUsuaris());
         }
 
-        setPnlVistaUsuaris(new VistaUsuaris(this));        
+        setPnlVistaUsuaris(new VistaUsuaris(this));
         getContentPane().add(pnlVistaUsuaris, "span, grow, align center, wrap");
         revalidate();
         repaint();
-        
-        
-
     }
 
+    /**
+     * Carga y muestra la lista de entrenamientos (Workouts) para el usuario
+     * seleccionado. Elimina paneles anteriores y centra el nuevo panel en la
+     * interfaz gráfica.
+     *
+     * @param nomUsuari El nombre del usuario seleccionado para cargar los
+     * entrenamientos.
+     */
     public void carregarLlistaWorkOutsUsuari(String nomUsuari) {
         getContentPane().remove(getPnlVistaUsuaris());
         setUsuariSeleccionatTexte(nomUsuari);
@@ -293,9 +426,20 @@ public class Main extends javax.swing.JFrame {
 
         pack();
         repaint();
-
     }
 
+    /**
+     * Método principal que inicia la ejecución de la aplicación. Configura el
+     * tema gráfico (look-and-feel) personalizado y lanza la interfaz principal.
+     *
+     * @param args Argumentos de línea de comandos (no utilizados en esta
+     * aplicación).
+     * @throws UnsupportedLookAndFeelException Se lanza si la configuración del
+     * look-and-feel no es compatible.
+     *
+     * Este método se encarga de establecer las propiedades del tema Bernstein y
+     * de inicializar los componentes gráficos necesarios para la interfaz.
+     */
     public static void main(String args[]) throws UnsupportedLookAndFeelException {
         try {
             // Crear propiedades para personalizar el look and feel
@@ -342,10 +486,9 @@ public class Main extends javax.swing.JFrame {
             UIManager.put("backgroundColor", "230 240 255"); // Color azul muy débil
 
             Main mainInstance = new Main();
-            
+
             //definim el logo de l'aplicació 
-            UIManager.put("logo", Utilitats.obtenirImage("logocompany.jpg")); 
-          
+            UIManager.put("logo", Utilitats.obtenirImage("logocompany.jpg"));
 
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
             e.printStackTrace();
@@ -359,34 +502,60 @@ public class Main extends javax.swing.JFrame {
 
     }
 
+    /**
+     * Obtiene el panel de usuarios.
+     */
     public VistaUsuaris getPnlVistaUsuaris() {
         return pnlVistaUsuaris;
     }
 
+    /**
+     * Establece el panel que muestra la lista de usuarios en la interfaz
+     * gráfica. Este método actualiza el panel de usuarios utilizado en la
+     * aplicación.
+     *
+     * @param pnlVistaUsuaris El objeto VistaUsuaris que será asignado como el
+     * nuevo panel de usuarios.
+     */
     public void setPnlVistaUsuaris(VistaUsuaris pnlVistaUsuaris) {
         this.pnlVistaUsuaris = pnlVistaUsuaris;
     }
 
+    /**
+     * Obtiene el panel de entrenamientos.
+     */
     public VistaWorkouts getPnlVistaWorkouts() {
         return pnlVistaWorkouts;
     }
 
+    /**
+     * Establece el panel que muestra los entrenamientos (Workouts) en la
+     * interfaz gráfica.
+     *
+     * @param pnlVistaWorkouts El objeto VistaWorkouts que se utilizará como el
+     * nuevo panel de entrenamientos.
+     */
     public void setPnlVistaWorkouts(VistaWorkouts pnlVistaWorkouts) {
         this.pnlVistaWorkouts = pnlVistaWorkouts;
     }
-    
-    
-    
+
+    /**
+     * Obtiene el último entrenamiento añadido.
+     */
     public int getDarrerWorkoutAfegit() {
         return darrerWorkoutAfegit;
     }
 
-    
+    /**
+     * Establece el identificador del último entrenamiento añadido.
+     *
+     * @param darrerWorkoutAfegit Un entero que representa el nuevo
+     * identificador del último entrenamiento.
+     */
     public void setDarrerWorkoutAfegit(int darrerWorkoutAfegit) {
         this.darrerWorkoutAfegit = darrerWorkoutAfegit;
     }
-    
-    
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonLogOut;

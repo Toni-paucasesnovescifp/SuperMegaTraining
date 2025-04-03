@@ -39,19 +39,56 @@ import javax.swing.table.TableModel;
 import net.miginfocom.swing.MigLayout;
 
 /**
+ * Clase que gestiona la vista de entrenamientos (Workouts) y ejercicios
+ * asociados a un usuario. Proporciona funcionalidades para visualizar la foto
+ * del usuario, los entrenamientos asociados y los ejercicios dentro de cada
+ * entrenamiento. Utiliza MigLayout para organizar los componentes.
  *
  * @author Toni Covas
  */
 public class VistaWorkouts extends javax.swing.JPanel {
 
+    /**
+     * Instancia principal de la aplicación.
+     */
     private Main main = null;
+
+    /**
+     * Usuario seleccionado en la vista previa.
+     */
     private Usuari usuariSeleccionat = null;
+
+    /**
+     * Modelo de datos para la tabla de entrenamientos.
+     */
     private DefaultTableModel model;
+
+    /**
+     * Tabla que muestra los entrenamientos del usuario seleccionado.
+     */
     private JTable jTableWorkOuts;
+
+    /**
+     * Modelo de datos para la tabla de ejercicios.
+     */
     private DefaultTableModel modelExercicis;
+
+    /**
+     * Entrenamiento seleccionado en la tabla de entrenamientos.
+     */
     private Workout workoutSeleccionat = null;
+
+    /**
+     * Tabla que muestra los ejercicios dentro de un entrenamiento seleccionado.
+     */
     private JTable jTableExercicis;
 
+    /**
+     * Constructor de la clase VistaWorkouts. Inicializa los componentes
+     * gráficos, configura el diseño y carga los datos del usuario seleccionado.
+     *
+     * @param mainJframe La ventana principal que contiene esta vista.
+     */
     public VistaWorkouts(Main mainJframe) {
         initComponents();
         main = mainJframe;
@@ -75,7 +112,10 @@ public class VistaWorkouts extends javax.swing.JPanel {
 
     }
 
-    // llegim la foto de la base de dades que té l'usuari i la mostram dins un JLabel
+    /**
+     * Carga y muestra la foto del usuario seleccionado desde la base de datos.
+     * Si no hay foto disponible, se muestra un mensaje por defecto.
+     */
     public void carregarFoto() {
         JLabel jLabelFoto;
         byte[] fotoBytes = usuariSeleccionat.getFoto();
@@ -90,17 +130,16 @@ public class VistaWorkouts extends javax.swing.JPanel {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            
 
             // Crear un JLabel per mostrar la imatge            
             jLabelFoto = new JLabel();
             if (imagen != null) {
 
-                int anchoDeseado = 75; 
+                int anchoDeseado = 75;
                 int anchoOriginal = imagen.getWidth();
                 int altoOriginal = imagen.getHeight();
                 int altoDeseado = (anchoDeseado * altoOriginal) / anchoOriginal;  // per l'altura mantenim la proporció a partir de l'ample que li hem definit
-                
+
                 // disminuim la imatge en base a l'ample i altura que li acabam de definir
                 Image imagenRedimensionada = imagen.getScaledInstance(anchoDeseado, altoDeseado, Image.SCALE_SMOOTH);
 
@@ -110,10 +149,9 @@ public class VistaWorkouts extends javax.swing.JPanel {
             }
         } else {
             // Mostrar un mensaje si fotoBytes es null
-            jLabelFoto= new JLabel("No hay foto disponible");
+            jLabelFoto = new JLabel("No hay foto disponible");
         }
 
-        
         // posam un "marco" al jLabel de la foto
         Color borderColor = new Color(255, 200, 0); // Color entre groc i taronja
         Border border = BorderFactory.createLineBorder(borderColor, 5);
@@ -124,6 +162,11 @@ public class VistaWorkouts extends javax.swing.JPanel {
 
     }
 
+    /**
+     * Configura y muestra la tabla de entrenamientos (Workouts) del usuario
+     * seleccionado. Incluye columnas para la fecha, ID del entrenamiento y
+     * comentarios.
+     */
     public void carregarTaulaWorkouts() {
         // model que farà de base a la taula workouts
         model = new DefaultTableModel();
@@ -155,7 +198,6 @@ public class VistaWorkouts extends javax.swing.JPanel {
         // omplim el model de la taula workouts amb informació que llegim de la base de dades
         actualizarTablaWorkouts(main.getUsuariSeleccionatTexte());
 
-        
         jScrollPaneWorkouts.getViewport().add(jTableWorkOuts);
 
         jLabelListaWorkouts.setText("Estos es el listado de Workouts del usuario: " + main.getUsuariSeleccionat().getNom());
@@ -164,10 +206,10 @@ public class VistaWorkouts extends javax.swing.JPanel {
         jLabelIrAtras.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));  // en fer click al jLabel, volem canviar el cursor del ratolí
         jLabelIrAtras.setVisible(true);
 
-        jButtonAnadirWorkout.setText("Añadir Workout");        
-        jButtonBorrarWorkout.setText("Borrar Workout");        
+        jButtonAnadirWorkout.setText("Añadir Workout");
+        jButtonBorrarWorkout.setText("Borrar Workout");
         jButtonModificarWorkout.setText("Modificar Workout");
-        
+
         // definim i inicalitzam (amb propietats MigLayout) un panell on hi posam la taula de workouts, boton per gestionar workouts i un jlabel pel títol
         JPanel jPanelWorkouts = new JPanel(new MigLayout("fill, insets 1", "[grow, fill]", "[]1[]"));
         jPanelWorkouts.add(jLabelListaWorkouts, "wrap");
@@ -183,7 +225,7 @@ public class VistaWorkouts extends javax.swing.JPanel {
 
         // introduim els dos panells (workout i exercicis) i l'icono per tornar a la pàgina principal, dins el cos de l'bojecte principal VistaWorkouts
         add(jPanelWorkouts, "grow");
-        add(jPanelExercicis, "grow, wrap");        
+        add(jPanelExercicis, "grow, wrap");
         add(jLabelIrAtras, "span, align center, wrap");
 
         // definim per la taula de workouts, el que volem que faci cada vegada que ens movem de fila = actualitzar la taula d'exercicis
@@ -211,6 +253,12 @@ public class VistaWorkouts extends javax.swing.JPanel {
 
     }
 
+    /**
+     * Ajusta el ancho de las columnas de una tabla para que se adapten al
+     * contenido.
+     *
+     * @param table La tabla cuyas columnas se van a ajustar.
+     */
     private void ajustarAnchoColumnas(JTable table) {
         TableModel model = table.getModel();
         for (int column = 0; column < table.getColumnCount(); column++) {
@@ -226,34 +274,34 @@ public class VistaWorkouts extends javax.swing.JPanel {
         }
     }
 
+    /**
+     * Configura y muestra la tabla de ejercicios asociados al entrenamiento
+     * seleccionado. Si no hay ejercicios disponibles, se muestra un mensaje por
+     * defecto.
+     */
     public void carregarTaulaExercicis() {
         // cream un taula Exercicis i la col.locarem dins jScrollPaneExercicis
         // aquest scrollPane ja s'havia definit i insertat dins l'objecte principal
         // al mètode carregarWorkouts
-        
-        
+
         jTableExercicis = new JTable();
         JTableHeader thExercicis = jTableExercicis.getTableHeader();
         thExercicis.setFont(new Font("Serif", Font.BOLD, 15));
 
-        
         // inicialitzam modelExercicis que serà la base d'informació per la taula d'exercicis
         modelExercicis = new DefaultTableModel();
         modelExercicis.setColumnCount(3);
         modelExercicis.setColumnIdentifiers(new Object[]{"IdExercici", "Exercici", "Descripcio"});
-        
+
         jTableExercicis.setModel(modelExercicis);
-        
 
         if (model.getRowCount() > 0) {
             actualizarTablaEjercicios((int) jTableWorkOuts.getValueAt(jTableWorkOuts.getSelectedRow(), 1));
         }
 
-        
         jScrollPaneExercicis.getViewport().removeAll();
         jScrollPaneExercicis.getViewport().add(jTableExercicis);
 
-        
         if (workoutSeleccionat != null) {
             jLabelListaExercicis.setText("Això és el llistat d'exercicis del workout: " + workoutSeleccionat.getId());
         } else {
@@ -262,29 +310,38 @@ public class VistaWorkouts extends javax.swing.JPanel {
 
         jLabelListaExercicis.setVisible(true);
 
-        
         ajustarAnchoColumnas(jTableExercicis);
         repaint();
 
     }
 
-    
-    
+    /**
+     * Selecciona una fila en la tabla de entrenamientos (Workouts) basada en el
+     * identificador del entrenamiento. Si encuentra la fila correspondiente, la
+     * selecciona y asegura que sea visible en la tabla.
+     *
+     * @param workoutId El identificador único del entrenamiento.
+     */
     public void seleccionarFilaPorId(int workoutId) {
-    for (int i = 0; i < jTableWorkOuts.getRowCount(); i++) {
-        if ((int) jTableWorkOuts.getValueAt(i, 1) == workoutId) {
-            jTableWorkOuts.setRowSelectionInterval(i, i);
-            // Asegurarse de que la fila seleccionada sea visible
-            jTableWorkOuts.scrollRectToVisible(jTableWorkOuts.getCellRect(i, 0, true));
-            break;
+        for (int i = 0; i < jTableWorkOuts.getRowCount(); i++) {
+            if ((int) jTableWorkOuts.getValueAt(i, 1) == workoutId) {
+                jTableWorkOuts.setRowSelectionInterval(i, i);
+                // Asegurarse de que la fila seleccionada sea visible
+                jTableWorkOuts.scrollRectToVisible(jTableWorkOuts.getCellRect(i, 0, true));
+                break;
+            }
         }
     }
-}
 
-    
-    
-    
-
+    /**
+     * Actualiza los datos en la tabla de entrenamientos (Workouts). Elimina
+     * todas las filas existentes, consulta la base de datos para obtener
+     * entrenamientos asociados al usuario seleccionado, los ordena y los agrega
+     * a la tabla.
+     *
+     * @param usuarioIdTexto El texto que identifica al usuario (usualmente, su
+     * nombre o ID).
+     */
     public void actualizarTablaWorkouts(String usuarioIdTexto) {
         // Eliminar todas las filas de la tabla
         for (int i = model.getRowCount() - 1; i >= 0; i--) {
@@ -314,7 +371,6 @@ public class VistaWorkouts extends javax.swing.JPanel {
 
         for (Workout w : workouts) {
 
-            
             //recorrem tots els workouts de l'usuari i modificam el format de la data
             // el que després integram dins el DataDefaultModel del workout és la data amb format ajustat
             SimpleDateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -338,6 +394,13 @@ public class VistaWorkouts extends javax.swing.JPanel {
         main.setUsuariSeleccionat(usuariSeleccionat);
     }
 
+    /**
+     * Actualiza los datos en la tabla de ejercicios asociados al entrenamiento
+     * seleccionado. Obtiene los datos de la base de datos, los ordena y los
+     * agrega al modelo de la tabla.
+     *
+     * @param idWorkout El identificador único del entrenamiento.
+     */
     public void actualizarTablaEjercicios(int idWorkout) {
         //llegim de la base de dadesels exercicis de l'usuari seleccionat, 
         ArrayList<Workout> workouts = DataAccess.getWorkoutsPerUser(usuariSeleccionat);
@@ -444,9 +507,15 @@ public class VistaWorkouts extends javax.swing.JPanel {
         jButtonModificarWorkout.setBounds(40, 400, 140, 39);
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Acción que se ejecuta cuando se hace clic en el botón de "Ir Atrás".
+     * Redirige la vista actual hacia la página principal donde se muestra la
+     * lista de usuarios.
+     *
+     * @param evt Evento de clic del mouse.
+     */
     private void jLabelIrAtrasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelIrAtrasMouseClicked
-        // aquí definim el que feim quan anam cap enrera (que és tornar a la pàgina on mostram la llista d'usuaris
-        
+
         main.getContentPane().remove(this);
         main.revalidate();
         main.repaint();
@@ -458,10 +527,19 @@ public class VistaWorkouts extends javax.swing.JPanel {
 
     }//GEN-LAST:event_jScrollPaneWorkoutsMouseClicked
 
+    /**
+     * Acción que se ejecuta al hacer clic en el botón de "Añadir Workout". Abre
+     * un cuadro de diálogo (JDialog) en modo "agregar", actualiza la tabla de
+     * ejercicios y workouts, y selecciona la fila correspondiente al nuevo
+     * workout agregado.
+     *
+     * @param evt Evento de clic del botón.
+     */
+
     private void jButtonAnadirWorkoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAnadirWorkoutActionPerformed
         // obrim jDialog amb el paràmetre "afegir", ja que aquest jDialog té dos paràmetres: "afegir" i " modificar"
-        main.addChangeWorkouts("afegir", null);       
-        
+        main.addChangeWorkouts("afegir", null);
+
         // el següent ho fa quan tancam el jDialog, bàsicament actualitzar taula exercicis i workouts
         actualizarTablaWorkouts(main.getUsuariSeleccionat().getNom());
 
@@ -477,14 +555,21 @@ public class VistaWorkouts extends javax.swing.JPanel {
 
     }//GEN-LAST:event_jButtonAnadirWorkoutActionPerformed
 
+    /**
+     * Acción que se ejecuta al hacer clic en el botón de "Borrar Workout".
+     * Verifica que no haya ejercicios asociados al workout antes de eliminarlo,
+     * y si el usuario confirma, elimina el workout de la base de datos y
+     * actualiza las tablas correspondientes.
+     *
+     * @param evt Evento de clic del botón.
+     */
     private void jButtonBorrarWorkoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBorrarWorkoutActionPerformed
 
-        if (modelExercicis.getRowCount()>0) {
-            JOptionPane.showMessageDialog(null, "No s'ha pogut eliminar el workout perquè té exercicis. Per el.liminar el workout, primer haurà d'el.liminar els exercicis associats", "Error", JOptionPane.ERROR_MESSAGE);            
+        if (modelExercicis.getRowCount() > 0) {
+            JOptionPane.showMessageDialog(null, "No s'ha pogut eliminar el workout perquè té exercicis. Per el.liminar el workout, primer haurà d'el.liminar els exercicis associats", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        
-        
+
         int result = JOptionPane.showConfirmDialog(null, "¿Seguro que vols el.liminar el workout seleccionat?", "Confirmació", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
         // Verificar la selección del usuario
@@ -512,14 +597,22 @@ public class VistaWorkouts extends javax.swing.JPanel {
         } else {
             jLabelListaExercicis.setText("");
         }
-        
+
         JOptionPane.showMessageDialog(null, "El workout amb numero " + numeroWorkoutAEliminar + " s'ha pogut el.liminar correctament.  ", "Eliminació de Workout", JOptionPane.INFORMATION_MESSAGE, Utilitats.obtenirIcon("checklist.png"));
 
 
     }//GEN-LAST:event_jButtonBorrarWorkoutActionPerformed
 
+    /**
+     * Acción que se ejecuta al hacer clic en el botón de "Modificar Workout".
+     * Crea un objeto Workout con los datos del workout seleccionado, abre un
+     * cuadro de diálogo en modo "modificar", y actualiza la tabla de workouts
+     * al cerrarlo.
+     *
+     * @param evt Evento de clic del botón.
+     */
     private void jButtonModificarWorkoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonModificarWorkoutActionPerformed
-        
+
         // inicialitzam un nou workout amb la  informació del workout seleccionat a la taula workouts
         Workout workoutModificar = new Workout();
         workoutModificar.setForDate((String) jTableWorkOuts.getValueAt(jTableWorkOuts.getSelectedRow(), 0));

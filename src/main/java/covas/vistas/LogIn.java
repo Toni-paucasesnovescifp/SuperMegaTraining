@@ -19,6 +19,9 @@ import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
 /**
+ * Clase LogIn que representa un cuadro de diálogo (JDialog) para realizar el
+ * inicio de sesión. Esta clase gestiona la validación de credenciales y la
+ * interacción con la interfaz gráfica.
  *
  * @author Toni Covas
  */
@@ -27,33 +30,18 @@ public class LogIn extends javax.swing.JDialog {
     private Main main = null;
 
     /**
-     * Creates new form LogIn
+     * Constructor de la clase LogIn. Inicializa los componentes gráficos y
+     * configura el comportamiento de los botones y campos de entrada del cuadro
+     * de diálogo.
+     *
+     * @param parent El JFrame que actúa como padre de este cuadro de diálogo.
+     * @param modal Define si el cuadro de diálogo será modal o no.
      */
     public LogIn(java.awt.Frame parent, boolean modal) {
-        super(parent, modal);
+
+        super (parent, modal);
         initComponents();
-
-        main = (Main) parent;
-        repaint();
-        btnLogin.setEnabled(false);
-        txtEmailLogin.setBackground(Color.YELLOW);
-
-        jButtonTancar.setToolTipText("Pitji aquí per tancar la finestre");
-
-        // Añadir efecto al hacer hover
-        jButtonTancar.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                jButtonTancar.setBackground(Color.LIGHT_GRAY);
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                jButtonTancar.setBackground(UIManager.getColor("control"));
-            }
-        });
-
-        
+         main=(Main)parent;
         
         btnLogin.setToolTipText("Pitji aquí per fer el login");
 
@@ -69,9 +57,7 @@ public class LogIn extends javax.swing.JDialog {
                 btnLogin.setBackground(UIManager.getColor("control"));
             }
         });
-        
-        
-        
+
         //aplicam el mètode validar email ja d'un principi, per validar l'email que hi ha per defecte
         validateEmail();
 
@@ -102,6 +88,10 @@ public class LogIn extends javax.swing.JDialog {
 
     }
 
+    /**
+     * Valida la dirección de correo electrónico introducida por el usuario.
+     * Cambia el estado del botón "Login" según si el correo es válido o no.
+     */
     private void validateEmail() {
         String email = txtEmailLogin.getText();
         if (isValidEmail(email)) {
@@ -115,6 +105,14 @@ public class LogIn extends javax.swing.JDialog {
         }
     }
 
+    /**
+     * Verifica si una dirección de correo electrónico cumple con el formato
+     * válido.
+     *
+     * @param email La dirección de correo electrónico a validar.
+     * @return {@code true} si el email es válido; {@code false} en caso
+     * contrario.
+     */
     private boolean isValidEmail(String email) {
         String emailRegex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{1,6}$";  // patró de la regular expression per revisar l'email
         Pattern pattern = Pattern.compile(emailRegex);
@@ -183,7 +181,15 @@ public class LogIn extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    // definim el que passa quan pitja al botó per fer login
+    /**
+     * Acción asociada al botón "Login". Cambia el cursor al estado de espera y
+     * ejecuta el proceso de validación y autenticación del usuario en un hilo
+     * separado para evitar bloqueos. Si el usuario es validado correctamente,
+     * se registra como activo y se carga la lista de usuarios del instructor en
+     * la interfaz gráfica.
+     *
+     * @param evt Evento generado al hacer clic en el botón "Login".
+     */
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         // canviam el cursor del ratolí quan feim click al botó
         setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
@@ -237,12 +243,20 @@ public class LogIn extends javax.swing.JDialog {
 
     }//GEN-LAST:event_btnLoginActionPerformed
 
+    /**
+     * Acción asociada al botón "Cerrar". Cierra el cuadro de diálogo actual.
+     *
+     * @param evt Evento generado al hacer clic en el botón "Cerrar".
+     */
     private void jButtonTancarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonTancarActionPerformed
         dispose();        // tancam l'objecte MainJPanel
     }//GEN-LAST:event_jButtonTancarActionPerformed
 
     /**
-     * @param args the command line arguments
+     * Método principal que inicializa y muestra el cuadro de diálogo de inicio
+     * de sesión. Configura el look and feel "Nimbus" si está disponible.
+     *
+     * @param args Los argumentos de la línea de comandos.
      */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */

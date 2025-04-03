@@ -21,6 +21,7 @@ covas\vistas\LogIn$1.class
 covas\vistas\MainJPanel$2.class
 covas\vistas\LogIn.class
 covas\vistas\AddChangeWorkouts$2.class
+covas\vistas\LogIn$8$1.class
 covas\vistas\VistaUsuaris$3.class
 covas\model\Exercici.class
 covas\vistas\VistaWorkouts$8.class
@@ -44,7 +45,5 @@ covas\vistas\VistaWorkouts$3.class
 covas\vistas\VistaWorkouts.class
 covas\vistas\LogIn$6.class
 covas\utils\DateLabelFormatter.class
-covas\vistas\LogIn$9$1.class
 covas\vistas\VistaWorkouts$10.class
 covas\vistas\Main$4.class
-covas\vistas\LogIn$9.class

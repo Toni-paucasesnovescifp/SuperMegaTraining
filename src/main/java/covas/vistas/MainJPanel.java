@@ -10,6 +10,10 @@ import javax.swing.JLabel;
 import net.miginfocom.swing.MigLayout;
 
 /**
+ * Clase MainJPanel que representa un panel principal para la interfaz gráfica.
+ * Este panel incluye elementos como un logo, un enlace interactivo y un botón
+ * para iniciar sesión. Está diseñado con MigLayout para ajustar su disposición
+ * de manera flexible.
  *
  * @author Toni Covas
  */
@@ -17,6 +21,13 @@ public class MainJPanel extends javax.swing.JPanel {
 
     private Main main = null;
 
+    /**
+     * Constructor de la clase MainJPanel. Inicializa los componentes del panel,
+     * define su diseño y configura el comportamiento de los elementos
+     * interactivos, como el enlace y el botón de inicio de sesión.
+     *
+     * @param mainJframe La ventana principal (Main) que contiene este panel.
+     */
     public MainJPanel(Main mainJframe) {
         initComponents();
         main = mainJframe;
@@ -48,6 +59,11 @@ public class MainJPanel extends javax.swing.JPanel {
 
     @SuppressWarnings("unchecked")
 
+    /**
+     * Obtiene la etiqueta de inicio de sesión (Sign In).
+     *
+     * @return Un JLabel que representa el botón de inicio de sesión.
+     */
     public JLabel getJLabelSignIn() {
         return this.jLabelSignIn;
 
@@ -94,6 +110,12 @@ public class MainJPanel extends javax.swing.JPanel {
         jLabelSignIn.setBounds(330, 10, 60, 70);
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Acción ejecutada al hacer clic en el enlace (jLabelLink). Abre el enlace
+     * en el navegador predeterminado.
+     *
+     * @param evt Evento generado al hacer clic en el enlace.
+     */
     private void jLabelLinkMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelLinkMouseClicked
         try {
             Desktop.getDesktop().browse(new URI("https://paucasesnovescifp.cat/"));
@@ -102,6 +124,13 @@ public class MainJPanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_jLabelLinkMouseClicked
 
+    /**
+     * Acción ejecutada al hacer clic en el botón de inicio de sesión (Sign In).
+     * Llama al método para abrir el cuadro de diálogo de inicio de sesión en la
+     * ventana principal.
+     *
+     * @param evt Evento generado al hacer clic en el botón de inicio de sesión.
+     */
     private void jLabelSignInMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelSignInMouseClicked
 
         main.abrirLogin();
