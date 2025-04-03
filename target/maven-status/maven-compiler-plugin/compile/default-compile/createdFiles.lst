@@ -11,6 +11,7 @@ covas\model\Usuari.class
 covas\vistas\VistaWorkouts$2.class
 covas\vistas\VistaUsuaris.class
 covas\vistas\VistaWorkouts$9.class
+covas\model\package-info.class
 covas\vistas\LogIn$4.class
 covas\vistas\Main$2.class
 covas\dataaccess\DataAccess.class
@@ -26,9 +27,11 @@ covas\vistas\VistaUsuaris$3.class
 covas\model\Exercici.class
 covas\vistas\VistaWorkouts$8.class
 covas\vistas\AddChangeWorkouts.class
+covas\vistas\package-info.class
 covas\vistas\AddChangeWorkouts$5$1.class
 covas\vistas\VistaWorkouts$7.class
 covas\vistas\Main$1.class
+covas\utils\package-info.class
 covas\vistas\VistaUsuaris$1.class
 covas\vistas\Main$5.class
 covas\vistas\AddChangeWorkouts$3.class
@@ -43,6 +46,7 @@ covas\vistas\MainJPanel.class
 covas\vistas\LogIn$2.class
 covas\vistas\VistaWorkouts$3.class
 covas\vistas\VistaWorkouts.class
+covas\dataaccess\package-info.class
 covas\vistas\LogIn$6.class
 covas\utils\DateLabelFormatter.class
 covas\vistas\VistaWorkouts$10.class
