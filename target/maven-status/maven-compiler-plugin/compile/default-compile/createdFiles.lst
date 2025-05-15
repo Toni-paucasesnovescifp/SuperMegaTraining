@@ -24,10 +24,12 @@ covas\vistas\LogIn.class
 covas\vistas\AddChangeWorkouts$2.class
 covas\vistas\LogIn$8$1.class
 covas\vistas\VistaUsuaris$3.class
+covas\vistas\Main$9.class
 covas\model\Exercici.class
 covas\vistas\VistaWorkouts$8.class
 covas\vistas\AddChangeWorkouts.class
 covas\vistas\package-info.class
+covas\vistas\Main$8.class
 covas\vistas\AddChangeWorkouts$5$1.class
 covas\vistas\VistaWorkouts$7.class
 covas\vistas\Main$1.class
@@ -43,6 +45,7 @@ covas\vistas\LogIn$5.class
 covas\vistas\VistaWorkouts$6.class
 covas\utils\Utilitats.class
 covas\vistas\MainJPanel.class
+covas\vistas\Main$7.class
 covas\vistas\LogIn$2.class
 covas\vistas\VistaWorkouts$3.class
 covas\vistas\VistaWorkouts.class

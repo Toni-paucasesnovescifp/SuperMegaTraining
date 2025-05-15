@@ -1,11 +1,10 @@
 /**
  * Contiene las clases que definen la interfaz gráfica de usuario (GUI) de la aplicación.
  * Estas clases gestionan las pantallas y cuadros de diálogo que los usuarios
- * utilizan para interactuar con las funcionalidades de la aplicación, 
+ * utilizan para interactuar con las funcionalidades de la aplicación,
  * como agregar, modificar y visualizar usuarios, entrenamientos y ejercicios.
  */
 package covas.vistas;
-
 
 import com.jtattoo.plaf.bernstein.BernsteinLookAndFeel;
 import covas.model.Usuari;
@@ -13,7 +12,10 @@ import covas.dataaccess.DataAccess;
 import covas.model.Workout;
 import covas.utils.Utilitats;
 import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Desktop;
 import java.awt.Font;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Properties;
 import javax.swing.JOptionPane;
@@ -150,6 +152,9 @@ public class Main extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
+        jMenu2 = new javax.swing.JMenu();
+        jMenuItem5 = new javax.swing.JMenuItem();
+        jMenuItem6 = new javax.swing.JMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -221,6 +226,31 @@ public class Main extends javax.swing.JFrame {
             }
         });
         jMenu1.add(jMenuItem2);
+
+        jMenu2.setText("Help");
+        jMenu2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenu2ActionPerformed(evt);
+            }
+        });
+
+        jMenuItem5.setText("API Docs");
+        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem5ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem5);
+
+        jMenuItem6.setText("User Manual");
+        jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem6ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem6);
+
+        jMenu1.add(jMenu2);
 
         jMenuItem1.setMnemonic('S');
         jMenuItem1.setText("Sortir");
@@ -380,6 +410,59 @@ public class Main extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_jMenuItem3ActionPerformed
+
+    private void jMenu2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu2ActionPerformed
+
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenu2ActionPerformed
+
+    private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
+
+        try {
+            setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR)); // Cambia a "espera"
+            // definim ruta que està en c://users//<nomusuari>\ etc.  ,... se defineix amb "user.home" perquè és una carpeta variable, distina  segons l'ordinador on ho instal.lem.
+            String filePath = System.getProperty("user.home") + "\\AppData\\Local\\supermegatraining\\userManual\\user manual.pdf";
+            File file = new File(filePath);
+
+            // Verificar si l'arxiu existeix abans d'obrirlo
+            if (file.exists()) {
+                Desktop.getDesktop().open(file);
+            } else {
+                JOptionPane.showMessageDialog(null, "El manual de usuario no se encuentra en la ubicación especificada.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "No se pudo abrir el manual de usuario.", "Error", JOptionPane.ERROR_MESSAGE);
+        } finally {
+            setCursor(Cursor.getDefaultCursor());
+        }
+
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItem6ActionPerformed
+
+    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
+
+        try {
+            setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR)); // posam el ratolí en cursor d'espera
+            // definim la ruta, que és variable segons el nom d'usuari de l'ordinador on instal.lem l'aplicació
+            String filePath = System.getProperty("user.home") + "\\AppData\\Local\\supermegatraining\\apidocs\\index.html";
+            File file = new File(filePath);
+
+            // Verificam si l'arxiu existeix abans d'obrirlo
+            if (file.exists()) {
+                Desktop.getDesktop().open(file);
+            } else {
+                JOptionPane.showMessageDialog(null, "No se encuentra el fichero index.html de API Docs en ubicación especificada.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "No se pudo abrir el fichero index html de API Docs.", "Error", JOptionPane.ERROR_MESSAGE);
+        } finally {
+            setCursor(Cursor.getDefaultCursor());
+        }
+
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     /**
      * Registra al usuario activo en la aplicación. Actualiza el panel principal
@@ -568,10 +651,13 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JButton jButtonLogOut;
     private javax.swing.JLabel jLabelUsuariRegistrat;
     private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem jMenuItem5;
+    private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JPanel jPanelLogin;
     private javax.swing.JTable jTableWorkOutsperborrar;
     // End of variables declaration//GEN-END:variables

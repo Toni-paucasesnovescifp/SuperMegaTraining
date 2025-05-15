@@ -1,0 +1,16 @@
+Licencia de Software Libre - SuperMegaTraining 1.0
+Copyright © 2025 SuperMegaTraining Developers
+
+Este software se distribuye bajo los términos de la Licencia Pública General GNU (GPL) versión 3 o posterior.
+
+1. Libertad de Uso y Modificación
+SuperMegaTraining es un software libre: puedes usarlo, copiarlo, modificarlo y distribuirlo bajo los términos de esta licencia.
+
+2. Distribución
+Si compartes o redistribuyes este software, debes incluir esta licencia y el código fuente original.
+
+3. Sin Garantías
+SuperMegaTraining se proporciona "tal cual", sin garantía de ningún tipo. Los desarrolladores no se hacen responsables por cualquier daño directo o indirecto derivado del uso de este software.
+
+4. Atribución y Colaboración
+Si modificas y mejoras SuperMegaTraining, te animamos a contribuir con la comunidad publicando tus cambios y mencionando la fuente original.
